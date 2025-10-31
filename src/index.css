@@ -1,0 +1,33 @@
+@font-face {
+  font-family: 'WinkySans';
+  src: url('./assets/fonts/WinkySans-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+000-5FF, U+1E00-1EFF;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: "WinkySans";
+}
+
+ul{
+  list-style-type: none;
+}
+
+a{
+  text-decoration: none;
+}
+
+li a.active {
+    color: #efccac !important;
+    background-color: #69421e !important;
+}
