@@ -1,0 +1,214 @@
+.container {
+  padding: 2rem;
+  background-color: #fdf6f0;
+  min-height: calc(100vh - 141px);
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+.addButton {
+  background-color: #aa7748;
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.addButton:hover {
+  background-color: #8f6e4f;
+  transform: translateY(-2px);
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.card {
+  background-color: #fff;
+  height: 470px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(143, 110, 79, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  overflow: auto;
+}
+
+
+.card::-webkit-scrollbar{
+    width: 3px;
+    display: none;
+}
+
+.card:hover::-webkit-scrollbar{
+    display: block;
+}
+
+.card::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+
+.card::-webkit-scrollbar-thumb{
+   background-color: #efccac;
+   border-radius: 10px;
+   
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.cardHeader {
+    height: 70px;
+  background-color: #ffdfc2;
+  padding: 1.5rem;
+  border-bottom: 2px solid rgba(245, 204, 165, 0.342);
+  box-shadow: 0 0 10px 3px #ffdfc2;
+}
+
+.cardTitle {
+  color: #92653b;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+}
+
+.cardContent {
+  padding: 1.5rem;
+}
+
+.section:not(:last-child){
+  margin-bottom: 1rem;
+  padding-bottom: 10px;
+}
+
+
+.section:not(:last-child){
+    border-bottom:1px solid #fce6d2 ;
+}
+
+.sectionTitleContainer{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  color: #8b5c30;
+  font-size: 1.1rem;
+  width: fit-content;
+  font-weight: 600;
+  padding:0 15px 10px 0;
+  position: relative;
+}
+
+.sectionTitle::after,
+.sectionTitle::before{
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 100%;
+    right: 0;
+    bottom: 0;
+    background-color: #fdebdb;
+}
+
+.sectionTitle::after{
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+}
+
+.sectionTitle::before{
+    width: 70px;
+    height: 8px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.sectionText {
+  color: #976638;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.cardActions {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  border-top: 1px solid #efccac;
+}
+
+.actionButton {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: .4s;
+  background-color: #fde8d5;
+    color: #69421e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.actionButton:hover{
+    background-color: #69421e;
+    color: #fde8d5;
+}
+
+.actionButton svg{
+    transition: .4s;
+}
+
+.actionButton:hover svg{
+    transform: scale(1.4);
+}
+
+.favoriteBtn:hover{
+    background-color: rgb(86, 86, 246);
+    color: white;
+}
+
+.updateBtn:hover{
+    background-color: rgb(25, 134, 25);
+    color: white;
+}
+
+.deleteBtn:hover{
+    background-color: rgb(209, 63, 63);
+    color: white;
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+}
