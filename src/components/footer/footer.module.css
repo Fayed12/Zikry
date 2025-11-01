@@ -1,14 +1,11 @@
 .content {
-    width: 100%;
+    
   background-color: #efccac;
   padding: 20px;
   text-align: center;
   color: #69421e;
   font-size: 1rem;
   font-weight: 500;
-  position: fixed;
-  bottom: 0;
-  left: 0;
 }
 
 .name {
