@@ -28,6 +28,11 @@ a{
 }
 
 li a.active {
-    color: #efccac !important;
-    background-color: #69421e !important;
+  font-size: 1.2rem !important;
+    color: #483019 !important;
+}
+
+header{
+  position: sticky;
+  top: 0;
 }

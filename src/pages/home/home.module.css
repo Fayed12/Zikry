@@ -1,0 +1,94 @@
+.container {
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #fdf6f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.welcome {
+  color: #69421e;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.prayerBox {
+  width: 90%;
+  max-width: 800px;
+  background-color: #eccbac;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 15px rgba(143, 110, 79, 0.2);
+}
+
+.boxHeader {
+  color: #69421e;
+  font-size: 1.7rem;
+  text-align: center;
+  margin-bottom: 1.4rem;
+  font-weight: 600;
+}
+
+.section {
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  color: #8f6e4f;
+  font-size: 1rem;
+  margin-bottom: .7rem;
+  font-weight: 600;
+}
+
+.prayerText {
+  color: #69421e;
+  font-size: 1.3rem;
+  text-align: center;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.virtueText,
+.timeText {
+  color: #69421e;
+  font-size: 1.1rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #69421e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #69421e;
+  color: white;
+  transform: translateY(-2px);
+}
+
+button svg{
+    font-size: 1.2rem;
+}
