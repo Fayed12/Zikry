@@ -42,7 +42,13 @@ export const updateData = createAsyncThunk(
 const dataSlice = createSlice({
   name: "data",
   initialState,
-  reducers: {},
+  reducers: {
+    resetUpdateState: (state) => {
+      state.updateLoading = false;
+      state.updateDone = false;
+      state.updateError = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state) => {
@@ -79,5 +85,7 @@ const dataSlice = createSlice({
       });
   },
 });
+
+export const { resetUpdateState } = dataSlice.actions
 
 export default dataSlice.reducer;

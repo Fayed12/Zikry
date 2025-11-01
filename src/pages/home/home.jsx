@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import styles from "./home.module.css";
 import { fetchData, updateData } from "../../redux/dataSlice";
 import { ConfirmDialog } from "../../components/sweetAlert";
+import { resetUpdateState } from "../../redux/dataSlice";
 
 // react icons
 import { MdFavoriteBorder } from "react-icons/md";
@@ -32,8 +33,10 @@ function Home() {
 
   // fetch data
   useEffect(() => {
-    dispatch(fetchData());
-  }, [dispatch]);
+    if (!data || data.length === 0) {
+      dispatch(fetchData());
+    }
+  }, [dispatch, data.length, data]);
 
   // fetch random prayer
   useEffect(() => {
@@ -103,13 +106,15 @@ function Home() {
     }
 
     if (updateDone) {
-      toast.success("done successfully", { id: "home-toast" });
+        toast.success("done successfully", { id: "home-toast" });
+        dispatch(resetUpdateState())
     }
 
     if (updateError) {
-      toast.error(`Error: ${updateError}`, { id: "home-toast" });
+        toast.error(`Error: ${updateError}`, { id: "home-toast" });
+        dispatch(resetUpdateState());
     }
-  }, [updateLoading, updateDone, updateError]);
+  }, [updateLoading, updateDone, updateError, dispatch]);
 
   return (
     <>
