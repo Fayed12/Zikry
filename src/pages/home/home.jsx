@@ -12,9 +12,9 @@ import toast from "react-hot-toast";
 
 // local
 import styles from "./home.module.css";
-import { fetchData, updateData } from "../../redux/dataSlice";
-import { ConfirmDialog } from "../../components/sweetAlert";
+import { fetchData } from "../../redux/dataSlice";
 import { resetUpdateState } from "../../redux/dataSlice";
+import addToFavorite from "../../utils/addToFav";
 
 // react icons
 import { MdFavoriteBorder } from "react-icons/md";
@@ -56,65 +56,25 @@ function Home() {
   }
 
   // function handle add to favorite
-  async function addToFavorite(prayerId) {
-    for (const prayer of data) {
-      if (prayer.id === prayerId) {
-        if (!prayer.is_fav) {
-          const confirmAdd = await ConfirmDialog({
-            title: "هل تريد الإضافة إلى المفضلة؟",
-            text: "سيتم تحديث حالته في قاعدة البيانات.",
-            confirmText: "نعم، أضف",
-            cancelText: "إلغاء",
-          });
+    async function handleAddToFavorite(id, data, dispatch) {
+      await addToFavorite(id, data, dispatch);
+    }
 
-          if (confirmAdd) {
-            dispatch(
-              updateData({
-                prayerId,
-                updateValue: { is_fav: !prayer.is_fav },
-              })
-            );
-          } else {
-            toast.error("تم إلغاء العملية", { id: "home-toast" });
-          }
-        } else {
-          const confirmRemove = await ConfirmDialog({
-            title: "هل تريد الحذف من المفضلة؟",
-            text: "سيتم تحديث حالته في قاعدة البيانات.",
-            confirmText: "نعم، احذف",
-            cancelText: "إلغاء",
-          });
-
-          if (confirmRemove) {
-            dispatch(
-              updateData({
-                prayerId,
-                updateValue: { is_fav: !prayer.is_fav },
-              })
-            );
-          } else {
-            toast.error("تم إلغاء العملية", { id: "home-toast" });
-          }
+      useEffect(() => {
+        if (updateLoading) {
+          toast.loading("loading...", { id: "home-toast" });
         }
-      }
-    }
-  }
 
-  useEffect(() => {
-    if (updateLoading) {
-      toast.loading("loading...", { id: "home-toast" });
-    }
+        if (updateDone) {
+          toast.success("done successfully", { id: "home-toast" });
+          dispatch(resetUpdateState());
+        }
 
-    if (updateDone) {
-        toast.success("done successfully", { id: "home-toast" });
-        dispatch(resetUpdateState())
-    }
-
-    if (updateError) {
-        toast.error(`Error: ${updateError}`, { id: "home-toast" });
-        dispatch(resetUpdateState());
-    }
-  }, [updateLoading, updateDone, updateError, dispatch]);
+        if (updateError) {
+          toast.error(`Error: ${updateError}`, { id: "home-toast" });
+          dispatch(resetUpdateState());
+        }
+      }, [updateLoading, updateDone, updateError, dispatch]);
 
   return (
     <>
@@ -145,8 +105,10 @@ function Home() {
                 <div className={styles.buttonContainer}>
                   <button
                     className={`${styles.button} ${styles.favoriteBtn}`}
-                    onClick={() => addToFavorite(prayer.id)}
-                    title="add to fav"
+                    onClick={() =>
+                      handleAddToFavorite(prayer.id, data, dispatch)
+                    }
+                    title="add or remove from favorite"
                   >
                     {prayer?.is_fav ? <MdFavorite /> : <MdFavoriteBorder />}
                   </button>

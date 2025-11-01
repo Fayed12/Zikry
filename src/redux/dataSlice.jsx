@@ -11,6 +11,11 @@ const initialState = {
   updateLoading: false,
   updateDone: false,
   updateError: null,
+  deleteActions: {
+    loading: false,
+    done: false,
+    error: null,
+  },
 };
 
 // fetch all data
@@ -39,6 +44,17 @@ export const updateData = createAsyncThunk(
   }
 );
 
+// delete value
+export const deleteData = createAsyncThunk(
+  "dataSlice/deleteData",
+  async (prayerId, thunkAPI) => {
+    const {error } = await supabase.from("data").delete().eq("id", prayerId);
+    if (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const dataSlice = createSlice({
   name: "data",
   initialState,
@@ -47,6 +63,9 @@ const dataSlice = createSlice({
       state.updateLoading = false;
       state.updateDone = false;
       state.updateError = null;
+    },
+    resetDeleteState: (state) => {
+      state.delete = { loading: false, done: false, error: null };
     },
   },
   extraReducers: (builder) => {
@@ -83,9 +102,22 @@ const dataSlice = createSlice({
           (state.updateError = action.payload),
           (state.updateDone = false);
       });
+    builder
+      .addCase(deleteData.pending, (state) => {
+        (state.deleteActions.loading = true),
+          (state.deleteActions.error = null);
+      })
+      .addCase(deleteData.fulfilled, (state) => {
+        (state.deleteActions.loading = false),
+          (state.deleteActions.error = null);
+      })
+      .addCase(deleteData.rejected, (state, action) => {
+        (state.deleteActions.loading = false),
+          (state.deleteActions.error = action.payload);
+      });
   },
 });
 
-export const { resetUpdateState } = dataSlice.actions
+export const { resetUpdateState,resetDeleteState } = dataSlice.actions;
 
 export default dataSlice.reducer;
