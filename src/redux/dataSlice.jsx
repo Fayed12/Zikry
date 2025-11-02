@@ -16,6 +16,11 @@ const initialState = {
     done: false,
     error: null,
   },
+  addNewSuppActions: {
+    loading: false,
+    done: false,
+    error: null,
+  },
 };
 
 // fetch all data
@@ -52,6 +57,32 @@ export const deleteData = createAsyncThunk(
     if (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
+    thunkAPI.dispatch(fetchData());
+  }
+);
+
+// add new value
+export const addNewValue = createAsyncThunk(
+  "dataSlice/addNewValue",
+  async (newPrayer, thunkAPI) => {
+    const { data, error } = await supabase
+      .from("data")
+      .insert([
+        {
+          id: newPrayer.id,
+          text: newPrayer.text,
+          virtue: newPrayer.virtue,
+          time: newPrayer.time,
+          is_fav : newPrayer.is_fav
+        },
+      ])
+      .select();
+
+    if (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+    thunkAPI.dispatch(fetchData());
+    return data;
   }
 );
 
@@ -65,8 +96,11 @@ const dataSlice = createSlice({
       state.updateError = null;
     },
     resetDeleteState: (state) => {
-      state.delete = { loading: false, done: false, error: null };
+      state.deleteActions = { loading: false, done: false, error: null };
     },
+    resetAddNewValue: (state) => {
+      state.addNewSuppActions = { loading: false, done: false, error: null };
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -106,18 +140,37 @@ const dataSlice = createSlice({
       .addCase(deleteData.pending, (state) => {
         (state.deleteActions.loading = true),
           (state.deleteActions.error = null);
+        state.deleteActions.done = false;
       })
       .addCase(deleteData.fulfilled, (state) => {
         (state.deleteActions.loading = false),
           (state.deleteActions.error = null);
+        (state.deleteActions.done = true)
       })
       .addCase(deleteData.rejected, (state, action) => {
         (state.deleteActions.loading = false),
           (state.deleteActions.error = action.payload);
+        state.deleteActions.done = false;
+      });
+    builder
+      .addCase(addNewValue.pending, (state) => {
+        (state.addNewSuppActions.loading = true),
+          (state.addNewSuppActions.error = null);
+        state.addNewSuppActions.done = false;
+      })
+      .addCase(addNewValue.fulfilled, (state) => {
+        (state.addNewSuppActions.loading = false);
+          (state.addNewSuppActions.error = null);
+        (state.addNewSuppActions.done = true);
+      })
+      .addCase(addNewValue.rejected, (state, action) => {
+        (state.addNewSuppActions.loading = false),
+          (state.addNewSuppActions.error = action.payload);
+        state.addNewSuppActions.done = false;
       });
   },
 });
 
-export const { resetUpdateState,resetDeleteState } = dataSlice.actions;
+export const { resetUpdateState,resetDeleteState,resetAddNewValue } = dataSlice.actions;
 
 export default dataSlice.reducer;

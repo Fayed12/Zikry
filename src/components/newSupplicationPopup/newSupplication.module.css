@@ -1,0 +1,101 @@
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(105, 66, 30, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(143, 110, 79, 0.18);
+  padding: 2rem 1.5rem;
+  min-width: 320px;
+  max-width: 95vw;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  border: 2px solid #efccac;
+}
+
+.title {
+  color: #69421e;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  color: #8f6e4f;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.input,
+.textarea {
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #efccac;
+  font-size: 1rem;
+  background: #faf4f0;
+  color: #69421e;
+  resize: none;
+}
+
+.textarea {
+  min-height: 60px;
+  max-height: 120px;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.addBtn {
+  background: #69421e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.addBtn:hover {
+  background: #8f6e4f;
+}
+
+.cancelBtn {
+  background: #efccac;
+  color: #69421e;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancelBtn:hover {
+  background: #e5b98d;
+}

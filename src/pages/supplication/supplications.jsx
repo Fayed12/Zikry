@@ -20,6 +20,7 @@ import addToFavorite from "../../utils/addToFav";
 import { deleteData } from "../../redux/dataSlice";
 import { ConfirmDialog } from "../../components/sweetAlert";
 import { resetDeleteState } from "../../redux/dataSlice";
+import NewSupplicationPopup from "../../components/newSupplicationPopup/newSupplicationPopup";
 
 function Supplications() {
   const {
@@ -32,12 +33,8 @@ function Supplications() {
     deleteActions,
   } = useSelector((state) => state.data);
   const dispatch = useDispatch();
-  const [supplicationsValues, setSupplicationsValues] = useState([])
-
-  // add new value
-  function handleAddNew() {
-    console.log("Add new clicked");
-  }
+  const [supplicationsValues, setSupplicationsValues] = useState([]);
+  const [openPopup, setOpenPopup] = useState(false)
 
   // update value
   function handleUpdate(id) {
@@ -82,9 +79,7 @@ function Supplications() {
             const newData = data.filter((prayer) => {
               return prayer.id !== prayerId
             })
-            setTimeout(() => {
-              setSupplicationsValues(newData);
-            }, 2000);
+            setSupplicationsValues(newData);
           } else {
             toast.error("تم إلغاء العملية", { id: "home-toast" });
           }
@@ -92,18 +87,25 @@ function Supplications() {
     }
   };
 
+  // handel open popup
+  function handelOpenPopup() {
+    toast("من فضلك اكتب دعاء بصيغه جيده احتراماً لدينك", { id: "home-toast" });
+    setTimeout(() => {
+      setOpenPopup(true)
+    }, 2000);
+  }
+
 useEffect(() => {
   if (deleteActions.loading) {
     toast.loading("جارٍ الحذف...", { id: "home-toast" });
   } else if (deleteActions.done) {
     toast.success("تم الحذف بنجاح", { id: "home-toast" });
     dispatch(resetDeleteState()); 
-  } else if (deleteActions.error) {
+  } else if (deleteActions.error !== null) {
     toast.error(deleteActions.error, { id: "home-toast" });
     dispatch(resetDeleteState());
   } 
 }, [deleteActions, dispatch]);
-
 
 
   // fetch data
@@ -121,7 +123,10 @@ useEffect(() => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <button className={styles.addButton} onClick={handleAddNew}>
+        <button
+          className={styles.addButton}
+          onClick={() => handelOpenPopup()}
+        >
           إضافة دعاء جديد +
         </button>
       </div>
@@ -129,7 +134,7 @@ useEffect(() => {
       {error === null ? (
         !loading ? (
           data && data.length !== 0 ? (
-            <div className={styles.cardsGrid}>
+            <div key={data.id} className={styles.cardsGrid}>
               {supplicationsValues.map((supplication) => (
                 <div key={supplication.id} className={styles.card}>
                   <div className={styles.cardHeader}>
@@ -202,13 +207,28 @@ useEffect(() => {
               ))}
             </div>
           ) : (
-            <div>no data</div>
+            <div className={styles.stateContainer}>
+              <div className={styles.stateEmpty}>
+                ابدأ بتنظيم ادعيتك وتخزينها في مكان واحد
+              </div>
+            </div>
           )
         ) : (
-          <div>loading..</div>
+          <div className={styles.stateContainer}>
+            <div className={styles.stateLoading}>جارٍ التحميل...</div>
+          </div>
         )
       ) : (
-        <div>error</div>
+          <div className={styles.stateContainer}>
+            <div className={styles.stateError}>{error}</div>
+          </div>
+      )}
+      {openPopup && (
+        <NewSupplicationPopup
+          funClose={setOpenPopup}
+          setAllData={setSupplicationsValues}
+          supplication={supplicationsValues}
+        />
       )}
     </div>
   );
