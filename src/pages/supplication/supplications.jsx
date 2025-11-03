@@ -34,7 +34,7 @@ function Supplications() {
   } = useSelector((state) => state.data);
   const dispatch = useDispatch();
   const [supplicationsValues, setSupplicationsValues] = useState([]);
-  const [openPopup, setOpenPopup] = useState(false)
+  const [openPopup, setOpenPopup] = useState(false);
 
   // update value
   function handleUpdate(id) {
@@ -46,67 +46,66 @@ function Supplications() {
     await addToFavorite(id, data, dispatch);
   }
 
-    useEffect(() => {
-      if (updateLoading) {
-        toast.loading("loading...", { id: "home-toast" });
-      }
+  useEffect(() => {
+    if (updateLoading) {
+      toast.loading("loading...", { id: "home-toast" });
+    }
 
-      if (updateDone) {
-        toast.success("done successfully", { id: "home-toast" });
-        dispatch(resetUpdateState());
-      }
+    if (updateDone) {
+      toast.success("done successfully", { id: "home-toast" });
+      dispatch(resetUpdateState());
+    }
 
-      if (updateError) {
-        toast.error(`Error: ${updateError}`, { id: "home-toast" });
-        dispatch(resetUpdateState());
-      }
-    }, [updateLoading, updateDone, updateError, dispatch]);
+    if (updateError) {
+      toast.error(`Error: ${updateError}`, { id: "home-toast" });
+      dispatch(resetUpdateState());
+    }
+  }, [updateLoading, updateDone, updateError, dispatch]);
 
   // delete value
   async function handleDelete(prayerId) {
     for (const prayer of data) {
       if (prayer.id === prayerId) {
-          const confirmAdd = await ConfirmDialog({
-            title: "هل تريد حذف الدعاء؟",
-            text: "سيتم تحديث حالته في قاعدة البيانات.",
-            confirmText: "نعم",
-            cancelText: "إلغاء",
-          });
+        const confirmAdd = await ConfirmDialog({
+          title: "هل تريد حذف الدعاء؟",
+          text: "سيتم تحديث حالته في قاعدة البيانات.",
+          confirmText: "نعم",
+          cancelText: "إلغاء",
+        });
 
         if (confirmAdd) {
-            dispatch(deleteData(prayerId));
-            toast.success("تم الحذف بنجاح", { id: "home-toast" });
-            const newData = data.filter((prayer) => {
-              return prayer.id !== prayerId
-            })
-            setSupplicationsValues(newData);
-          } else {
-            toast.error("تم إلغاء العملية", { id: "home-toast" });
-          }
+          dispatch(deleteData(prayerId));
+          toast.success("تم الحذف بنجاح", { id: "home-toast" });
+          const newData = data.filter((prayer) => {
+            return prayer.id !== prayerId;
+          });
+          setSupplicationsValues(newData);
+        } else {
+          toast.error("تم إلغاء العملية", { id: "home-toast" });
+        }
       }
     }
-  };
+  }
 
   // handel open popup
   function handelOpenPopup() {
     toast("من فضلك اكتب دعاء بصيغه جيده احتراماً لدينك", { id: "home-toast" });
     setTimeout(() => {
-      setOpenPopup(true)
+      setOpenPopup(true);
     }, 2000);
   }
 
-useEffect(() => {
-  if (deleteActions.loading) {
-    toast.loading("جارٍ الحذف...", { id: "home-toast" });
-  } else if (deleteActions.done) {
-    toast.success("تم الحذف بنجاح", { id: "home-toast" });
-    dispatch(resetDeleteState()); 
-  } else if (deleteActions.error !== null) {
-    toast.error(deleteActions.error, { id: "home-toast" });
-    dispatch(resetDeleteState());
-  } 
-}, [deleteActions, dispatch]);
-
+  useEffect(() => {
+    if (deleteActions.loading) {
+      toast.loading("جارٍ الحذف...", { id: "home-toast" });
+    } else if (deleteActions.done) {
+      toast.success("تم الحذف بنجاح", { id: "home-toast" });
+      dispatch(resetDeleteState());
+    } else if (deleteActions.error !== null) {
+      toast.error(deleteActions.error, { id: "home-toast" });
+      dispatch(resetDeleteState());
+    }
+  }, [deleteActions, dispatch]);
 
   // fetch data
   useEffect(() => {
@@ -123,10 +122,7 @@ useEffect(() => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <button
-          className={styles.addButton}
-          onClick={() => handelOpenPopup()}
-        >
+        <button className={styles.addButton} onClick={() => handelOpenPopup()}>
           إضافة دعاء جديد +
         </button>
       </div>
@@ -219,9 +215,9 @@ useEffect(() => {
           </div>
         )
       ) : (
-          <div className={styles.stateContainer}>
-            <div className={styles.stateError}>{error}</div>
-          </div>
+        <div className={styles.stateContainer}>
+          <div className={styles.stateError}>{error}</div>
+        </div>
       )}
       {openPopup && (
         <NewSupplicationPopup
