@@ -24,6 +24,11 @@ function NavBar() {
                 </NavLink>
               </li>
               <li>
+                <NavLink to={"favorite"} replace={true}>
+                  Favorite
+                </NavLink>
+              </li>
+              <li>
                 <NavLink to={"contactUs"} replace={true}>
                   Contact Us
                 </NavLink>

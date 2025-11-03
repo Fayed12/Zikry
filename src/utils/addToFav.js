@@ -1,5 +1,8 @@
-import { ConfirmDialog } from "../components/sweetAlert";
+// toast
 import toast from "react-hot-toast";
+
+// local
+import { ConfirmDialog } from "../components/sweetAlert";
 import { updateData } from "../redux/dataSlice";
 
 async function addToFavorite(prayerId, data, dispatch) {

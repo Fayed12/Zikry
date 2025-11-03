@@ -43,6 +43,7 @@ footer{
     height: 60px;
   position: sticky;
   bottom: 0;
+  z-index: 1000;
 }
 
 /* start sweet alert */
