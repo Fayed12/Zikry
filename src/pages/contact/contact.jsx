@@ -19,8 +19,8 @@ const Contact = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    setFocus,
   } = useForm();
-  const nameInp = useRef();
   const form = useRef();
 
   // handle submit message
@@ -51,10 +51,10 @@ const Contact = () => {
     }, 1500);
   }
 
-  // focus to input in mount
-  //   useEffect(() => {
-  //     nameInp.current.focus();
-  //   }, []);
+//   focus to input in mount
+    useEffect(() => {
+      setFocus("username");
+    }, [setFocus]);
 
   return (
     <div className={styles.page}>
@@ -76,7 +76,6 @@ const Contact = () => {
               <label className={styles.label}>الاسم</label>
               <input
                 className={styles.input}
-                ref={nameInp}
                 type="text"
                 {...register("username", {
                   required: "الاسم مطلوب",
