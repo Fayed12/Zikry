@@ -21,6 +21,7 @@ import { deleteData } from "../../redux/dataSlice";
 import { ConfirmDialog } from "../../components/sweetAlert";
 import { resetDeleteState } from "../../redux/dataSlice";
 import NewSupplicationPopup from "../../components/newSupplicationPopup/newSupplicationPopup";
+import EditSupplication from "../../components/editSupplicationPupup/editSupplication";
 
 function Supplications() {
   const {
@@ -35,10 +36,16 @@ function Supplications() {
   const dispatch = useDispatch();
   const [supplicationsValues, setSupplicationsValues] = useState([]);
   const [openPopup, setOpenPopup] = useState(false);
+  const [openEditPopup, setOpenEditPopup] = useState(false);
+  const [editValue, setEditValue] = useState("");
 
   // update value
   function handleUpdate(id) {
-    console.log("Update clicked for id:", id);
+    setOpenEditPopup(true);
+    const filteredValue = supplicationsValues.filter((supplication) => {
+      return supplication.id === id;
+    });
+    setEditValue(filteredValue.at(0));
   }
 
   // add to favorite
@@ -48,11 +55,11 @@ function Supplications() {
 
   useEffect(() => {
     if (updateLoading) {
-      toast.loading("loading...", { id: "home-toast" });
+      toast.loading("...جاري التحديث", { id: "home-toast" });
     }
 
     if (updateDone) {
-      toast.success("done successfully", { id: "home-toast" });
+      toast.success("تم التحديث بنجاح", { id: "home-toast" });
       dispatch(resetUpdateState());
     }
 
@@ -92,7 +99,7 @@ function Supplications() {
     toast("من فضلك اكتب دعاء بصيغه جيده احتراماً لدينك", { id: "home-toast" });
     setTimeout(() => {
       setOpenPopup(true);
-    }, 2000);
+    }, 1500);
   }
 
   useEffect(() => {
@@ -224,6 +231,12 @@ function Supplications() {
           funClose={setOpenPopup}
           setAllData={setSupplicationsValues}
           supplication={supplicationsValues}
+        />
+      )}
+      {openEditPopup && (
+        <EditSupplication
+          funClose={setOpenEditPopup}
+          supplication={editValue}
         />
       )}
     </div>
