@@ -82,15 +82,20 @@ const Favorite = () => {
             <div className={styles.cardBody}>
               <p className={styles.cardText}>{item.text}</p>
 
-              <div className={styles.meta}>
                 <div className={styles.metaItem}>
                   <span className={styles.metaLabel}>فضله</span>
                   <span className={styles.metaValue}>{item.virtue}</span>
                 </div>
+              <div className={styles.meta}>
                 <div className={styles.metaItem}>
                   <span className={styles.metaLabel}>الوقت</span>
                   <span className={styles.metaValue}>{item.time}</span>
                 </div>
+                <div className={styles.metaItem}>
+                  <span className={styles.metaLabel}>العدد</span>
+                  <span className={styles.metaValue}>{item.number}</span>
+                </div>
+                
               </div>
             </div>
 

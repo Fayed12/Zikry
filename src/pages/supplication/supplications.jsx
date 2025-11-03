@@ -167,6 +167,13 @@ function Supplications() {
                       </div>
                       <p className={styles.sectionText}>{supplication.time}</p>
                     </div>
+
+                    <div className={styles.section}>
+                      <div className={styles.sectionTitleContainer}>
+                        <h4 className={styles.sectionTitle}>العدد</h4>
+                      </div>
+                      <p className={styles.sectionText}>{supplication.number}</p>
+                    </div>
                   </div>
 
                   <div className={styles.cardActions}>

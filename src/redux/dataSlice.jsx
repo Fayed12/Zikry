@@ -70,11 +70,12 @@ export const addNewValue = createAsyncThunk(
       .insert([
         {
           id: newPrayer.id,
-          type :newPrayer.title ,
+          type: newPrayer.title,
+          number: newPrayer.allNumber,
           text: newPrayer.text,
           virtue: newPrayer.virtue,
           time: newPrayer.time,
-          is_fav : newPrayer.is_fav
+          is_fav: newPrayer.is_fav,
         },
       ])
       .select();

@@ -32,6 +32,11 @@ li a.active {
     color: #483019 !important;
 }
 
+.content{
+  padding: 2rem;
+  background-color: #fdf6f0;
+}
+
 header{
   position: sticky;
   top: 0;

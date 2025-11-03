@@ -16,8 +16,9 @@ const EditSupplication = ({ funClose, supplication }) => {
     (state) => state.data
   );
   const dispatch = useDispatch();
-  const [newValue, setNewValue] = useState({
-    text: supplication.text,
+    const [newValue, setNewValue] = useState({
+        text: supplication.text,
+        allNumber:supplication.number ,
     virtue: supplication.virtue,
     time: supplication.time,
   });
@@ -44,7 +45,8 @@ const EditSupplication = ({ funClose, supplication }) => {
     dispatch(
       updateData({
         prayerId: supplication.id,
-        updateValue: {
+          updateValue: {
+            number: newValue.allNumber,
           text: newValue.text,
           virtue: newValue.virtue,
           time: newValue.time,
@@ -89,15 +91,26 @@ const EditSupplication = ({ funClose, supplication }) => {
             onChange={(e) => setNewValue({ ...newValue, text: e.target.value })}
           />
         </div>
+        <div className={styles.formCol}>
+          <label className={styles.label}>الفضل</label>
+          <textarea
+            className={styles.textarea}
+            value={newValue?.virtue || ""}
+            onChange={(e) =>
+              setNewValue({ ...newValue, virtue: e.target.value })
+            }
+          />
+        </div>
 
         <div className={styles.formRow}>
           <div className={styles.formCol}>
-            <label className={styles.label}>الفضل</label>
-            <textarea
-              className={styles.textarea}
-              value={newValue?.virtue || ""}
+            <label className={styles.label}>عدد الذكر او التسابيح</label>
+            <input
+              className={styles.input}
+              type="number"
+              value={newValue?.allNumber || ""}
               onChange={(e) =>
-                setNewValue({ ...newValue, virtue: e.target.value })
+                setNewValue({ ...newValue, allNumber: e.target.value })
               }
             />
           </div>

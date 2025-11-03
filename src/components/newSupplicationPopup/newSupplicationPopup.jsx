@@ -18,6 +18,7 @@ const NewSupplicationPopup = ({ funClose }) => {
   const { addNewSuppActions } = useSelector((state) => state.data);
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
+  const [allNumber, setAllNumber] = useState("");
   const [text, setText] = useState("");
   const [virtue, setVirtue] = useState("");
   const [time, setTime] = useState("");
@@ -48,6 +49,7 @@ const NewSupplicationPopup = ({ funClose }) => {
 
     const newSupp = {
       id: newId,
+      allNumber,
       title,
       text,
       virtue,
@@ -56,6 +58,7 @@ const NewSupplicationPopup = ({ funClose }) => {
     };
     dispatch(addNewValue(newSupp));
     setText("");
+    setAllNumber("")
     setTime("");
     setTitle("");
     setVirtue("");
@@ -100,6 +103,16 @@ const NewSupplicationPopup = ({ funClose }) => {
             onChange={(e) => setTitle(e.target.value)}
             ref={inputFocus}
             placeholder="اكتب عنوان الدعاء"
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>عدد التسابيح او الذكر</label>
+          <input
+            className={styles.input}
+            type="number"
+            value={allNumber}
+            onChange={(e) => setAllNumber(e.target.value)}
+            placeholder="عدد التسابيح"
           />
         </div>
         <div className={styles.formGroup}>

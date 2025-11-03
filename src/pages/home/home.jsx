@@ -100,6 +100,11 @@ function Home() {
                     <h3 className={styles.sectionTitle}>وقت الذكر</h3>
                     <p className={styles.timeText}>{prayer?.time}</p>
                   </div>
+
+                  <div className={styles.section}>
+                    <h3 className={styles.sectionTitle}>عدد الذكر</h3>
+                    <p className={styles.timeText}>{prayer?.number}</p>
+                  </div>
                 </div>
 
                 <div className={styles.buttonContainer}>
