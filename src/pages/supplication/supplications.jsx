@@ -141,7 +141,7 @@ function Supplications() {
               {supplicationsValues.map((supplication) => (
                 <div key={supplication.id} className={styles.card}>
                   <div className={styles.cardHeader}>
-                    <h3 className={styles.cardTitle}>{supplication.title}</h3>
+                    <h3 className={styles.cardTitle}>{supplication.type}</h3>
                   </div>
 
                   <div className={styles.cardContent}>

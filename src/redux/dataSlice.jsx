@@ -70,6 +70,7 @@ export const addNewValue = createAsyncThunk(
       .insert([
         {
           id: newPrayer.id,
+          type :newPrayer.title ,
           text: newPrayer.text,
           virtue: newPrayer.virtue,
           time: newPrayer.time,

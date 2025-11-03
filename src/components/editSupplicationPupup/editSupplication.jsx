@@ -1,5 +1,5 @@
 // react
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +21,7 @@ const EditSupplication = ({ funClose, supplication }) => {
     virtue: supplication.virtue,
     time: supplication.time,
   });
+    const inpField = useRef()
 
   // check inputs
   function handleCheckInputValue() {
@@ -70,6 +71,10 @@ const EditSupplication = ({ funClose, supplication }) => {
       dispatch(resetUpdateState());
     }
   }, [updateLoading, updateDone, updateError, dispatch]);
+    
+    useEffect(() => {
+        inpField.current.focus();
+    },[])
   return (
     <div className={styles.overlay}>
       <div className={styles.popup}>
@@ -79,7 +84,8 @@ const EditSupplication = ({ funClose, supplication }) => {
           <label className={styles.label}>نص الدعاء</label>
           <textarea
             className={styles.textarea}
-            defaultValue={supplication?.text || ""}
+            value={newValue?.text || ""}
+            ref={inpField}
             onChange={(e) => setNewValue({ ...newValue, text: e.target.value })}
           />
         </div>
@@ -89,7 +95,7 @@ const EditSupplication = ({ funClose, supplication }) => {
             <label className={styles.label}>الفضل</label>
             <textarea
               className={styles.textarea}
-              defaultValue={supplication?.virtue || ""}
+              value={newValue?.virtue || ""}
               onChange={(e) =>
                 setNewValue({ ...newValue, virtue: e.target.value })
               }
@@ -101,7 +107,7 @@ const EditSupplication = ({ funClose, supplication }) => {
             <input
               className={styles.input}
               type="text"
-              defaultValue={supplication?.time || ""}
+              value={newValue?.time || ""}
               onChange={(e) =>
                 setNewValue({ ...newValue, time: e.target.value })
               }
