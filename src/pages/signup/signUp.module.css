@@ -17,6 +17,7 @@
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   animation: fadeIn 0.6s ease-out;
+  position: relative;
 }
 
 .title {
@@ -111,6 +112,23 @@
   color: #8f6e4f;
 }
 
+.back{
+    position: absolute;
+    width: fit-content;
+    left: 20px;
+    bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.back a{
+    background-color: #ca8646;
+    color: white;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -2,6 +2,9 @@
 import { NavLink, replace } from "react-router";
 import { useNavigate } from "react-router";
 
+// react icons
+import { TbArrowBackUpDouble } from "react-icons/tb";
+
 // react hook form
 import { useForm } from "react-hook-form";
 
@@ -166,6 +169,11 @@ const SignUp = () => {
               Login
             </NavLink>
           </p>
+        </div>
+        <div className={styles.back}>
+          <NavLink to={"/home"} replace={true} title=" back to home">
+            <TbArrowBackUpDouble />
+          </NavLink>
         </div>
       </div>
     </div>
