@@ -28,7 +28,6 @@ const SignUp = () => {
   } = useForm({ mode: "onChange" });
   const navigate = useNavigate();
   const [latestUsers, setLatestUsers] = useState([]);
-    console.log(latestUsers);
 
   // handle submit data
 async function submit(data) {
