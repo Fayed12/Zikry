@@ -34,7 +34,9 @@ function NavBar() {
                 </NavLink>
               </li>
               <li>
-                <a href="#">signUp</a>
+                <NavLink to={"/signUp"} replace={true}>
+                  Sign Up
+                </NavLink>
               </li>
             </ul>
           </div>

@@ -8,6 +8,8 @@ import ErrorPage from "../pages/error/errorPage";
 import Contact from "../pages/contact/contact";
 import Supplications from "../pages/supplication/supplications";
 import Favorite from "../pages/favorite/favorite";
+import SignUp from "../pages/signup/signUp";
+import Login from "../pages/login/login";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,16 @@ const router = createBrowserRouter([
         path: "contactUs",
       },
     ],
+  },
+  {
+    element: <SignUp />,
+    path: "/signUp",
+    errorElement:<ErrorPage/>
+  },
+  {
+    element: <Login />,
+    path: "/login",
+    errorElement:<ErrorPage/>
   },
 ]);
 
