@@ -39,15 +39,16 @@ const Login = () => {
         const { password, ...safeUser } = correctUser;
 
         toast.success("login successfully", { id: "login-toast" });
-        sessionStorage.setItem("loginStatus", true);
         if (data.checkbox) {
           localStorage.setItem("user", JSON.stringify(safeUser));
+          localStorage.setItem("loginStatus" , true);
         } else {
+          sessionStorage.setItem("loginStatus", true);
           sessionStorage.setItem("user", JSON.stringify(safeUser));
         }
       }, 1500);
       setTimeout(() => {
-        navigate("/home", { replace: true });
+        navigate("/supplications", { replace: true });
       }, 2000);
     } else {
       toast.error("email or password is incorrect, try again", {

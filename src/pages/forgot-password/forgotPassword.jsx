@@ -190,4 +190,3 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
-// Mohamed!1n

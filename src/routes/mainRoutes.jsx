@@ -11,6 +11,7 @@ import Favorite from "../pages/favorite/favorite";
 import SignUp from "../pages/signup/signUp";
 import Login from "../pages/login/login";
 import ForgotPassword from "../pages/forgot-password/forgotPassword";
+import ProtectedRoutes from "./protectedRoutes";
 
 const router = createBrowserRouter([
   {
@@ -27,11 +28,17 @@ const router = createBrowserRouter([
         path: "home",
       },
       {
-        element: <Supplications />,
+        element:
+          (<ProtectedRoutes>
+            <Supplications />
+          </ProtectedRoutes>),
         path: "supplications",
       },
       {
-        element: <Favorite />,
+        element:
+          (<ProtectedRoutes>
+            <Favorite />
+          </ProtectedRoutes>),
         path: "favorite",
       },
       {

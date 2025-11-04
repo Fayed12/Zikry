@@ -10,7 +10,6 @@ import NavBar from "./components/nav-bar/navBar"
 import Footer from "./components/footer/footer"
 
 function App() {
-
   return (
     <>
       <Provider store={store}>
