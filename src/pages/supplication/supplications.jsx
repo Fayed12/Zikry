@@ -38,6 +38,7 @@ function Supplications() {
   const [openPopup, setOpenPopup] = useState(false);
   const [openEditPopup, setOpenEditPopup] = useState(false);
   const [editValue, setEditValue] = useState("");
+  const [loggedUser, setLoggedUser] = useState({});
 
   // update value
   function handleUpdate(id) {
@@ -117,15 +118,28 @@ function Supplications() {
   // fetch data
   useEffect(() => {
     if (!data || data.length === 0) {
-      dispatch(fetchData());
+      if (loggedUser && loggedUser.id) {
+        dispatch(fetchData(loggedUser.id));
+      }
     }
-  }, [data, data.length, dispatch]);
+  }, [data, data.length, dispatch, loggedUser, loggedUser.id]);
 
   useEffect(() => {
     if (data && data.length > 0) {
       setSupplicationsValues(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    const user =
+      JSON.parse(localStorage.getItem("user")) ||
+      JSON.parse(sessionStorage.getItem("user"));
+    if (user) {
+      setLoggedUser(user);
+    } else {
+      setLoggedUser({});
+    }
+  }, []);
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -172,7 +186,9 @@ function Supplications() {
                       <div className={styles.sectionTitleContainer}>
                         <h4 className={styles.sectionTitle}>العدد</h4>
                       </div>
-                      <p className={styles.sectionText}>{supplication.number}</p>
+                      <p className={styles.sectionText}>
+                        {supplication.number}
+                      </p>
                     </div>
                   </div>
 

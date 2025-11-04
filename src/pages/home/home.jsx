@@ -6,160 +6,209 @@ import { useNavigate } from "react-router";
 
 // redux
 import { useSelector, useDispatch } from "react-redux";
+import { fetchData, resetUpdateState } from "../../redux/dataSlice";
 
 // toast
 import toast from "react-hot-toast";
 
 // local
 import styles from "./home.module.css";
-import { fetchData } from "../../redux/dataSlice";
-import { resetUpdateState } from "../../redux/dataSlice";
 import addToFavorite from "../../utils/addToFav";
 
 // react icons
-import { MdFavoriteBorder } from "react-icons/md";
+import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { TfiReload } from "react-icons/tfi";
-import { MdFavorite } from "react-icons/md";
 
 function Home() {
-  const { data, loading, error, updateLoading, updateDone, updateError } =
-    useSelector((state) => state.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Redux data
+  const { data, loading, error, updateLoading, updateDone, updateError } =
+    useSelector((state) => state.data);
+
+  // Local states
   const [prayer, setPrayer] = useState({});
-  const [randomNum, setRandomNum] = useState(
-    Math.floor(Math.random() * data.length)
-  );
+  const [randomNum, setRandomNum] = useState(0);
+  const [loggedUser, setLoggedUser] = useState(null);
+  const [loginStatus, setLoginStatus] = useState(false);
 
-  // fetch data
+  /* --------------------------------------------------
+   🧩 1. Get logged user + login status on mount
+  -------------------------------------------------- */
   useEffect(() => {
-    if (!data || data.length === 0) {
-      dispatch(fetchData());
+    const user =
+      JSON.parse(localStorage.getItem("user")) ||
+      JSON.parse(sessionStorage.getItem("user"));
+    const status =
+      sessionStorage.getItem("loginStatus") ||
+      localStorage.getItem("loginStatus");
+
+    if (user && status === "true") {
+      setLoggedUser(user);
+      setLoginStatus(true);
     }
-  }, [dispatch, data.length, data]);
+  }, []);
 
-  // fetch random prayer
+  /* --------------------------------------------------
+   🧩 2. Fetch data for this user
+  -------------------------------------------------- */
   useEffect(() => {
-    setPrayer(data.at(randomNum));
-  }, [data, data.length, randomNum]);
+    if (loggedUser?.id) {
+      dispatch(fetchData(loggedUser.id));
+    }
+  }, [dispatch, loggedUser]);
 
-  // random process
-  function tackRandomValue() {
-    if (!data || data.length === 0) return;
+  /* --------------------------------------------------
+   🧩 3. Select random prayer
+  -------------------------------------------------- */
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const randomIndex = Math.floor(Math.random() * data.length);
+      setRandomNum(randomIndex);
+      setPrayer(data[randomIndex]);
+    }
+  }, [data]);
 
+  /* --------------------------------------------------
+   🧩 4. Handle update states (toast)
+  -------------------------------------------------- */
+  useEffect(() => {
+    if (updateLoading) toast.loading("جاري التحديث...", { id: "home-toast" });
+    if (updateDone) {
+      toast.success("تم بنجاح ✅", { id: "home-toast" });
+      dispatch(resetUpdateState());
+    }
+    if (updateError) {
+      toast.error(`خطأ: ${updateError}`, { id: "home-toast" });
+      dispatch(resetUpdateState());
+    }
+  }, [updateLoading, updateDone, updateError, dispatch]);
+
+  /* --------------------------------------------------
+   ⚙️ Functions
+  -------------------------------------------------- */
+  const tackRandomValue = () => {
+    if (!data?.length) return;
     let newRandom;
     do {
       newRandom = Math.floor(Math.random() * data.length);
     } while (newRandom === randomNum);
-
     setRandomNum(newRandom);
+    setPrayer(data[newRandom]);
+  };
+
+  const handleAddToFavorite = async (id) => {
+    await addToFavorite(id, data, dispatch);
+  };
+
+  /* --------------------------------------------------
+   🖥️ UI RENDER
+  -------------------------------------------------- */
+
+  // Not logged in
+  if (!loginStatus) {
+    return (
+      <div className={styles.supContainer}>
+        <div className={styles.prayerBox}>
+          <h1 className={styles.startMessage}>Welcome in Zikry</h1>
+          <p className={styles.startSupMessage}>
+            Start managing your supplications
+          </p>
+          <button
+            className={styles.getStartButton}
+            onClick={() => navigate("/login", { replace: true })}
+          >
+            Get Started
+          </button>
+        </div>
+      </div>
+    );
   }
 
-  // function handle add to favorite
-    async function handleAddToFavorite(id, data, dispatch) {
-      await addToFavorite(id, data, dispatch);
-    }
+  // Loading state
+  if (loading)
+    return (
+      <div className={styles.container}>
+        <div className={styles.prayerBox}>
+          <h2 className={styles.boxHeader}>Loading...</h2>
+        </div>
+      </div>
+    );
 
-      useEffect(() => {
-        if (updateLoading) {
-          toast.loading("loading...", { id: "home-toast" });
-        }
+  // Error state
+  if (error)
+    return (
+      <div className={styles.container}>
+        <div className={styles.prayerBox}>
+          <h2 className={styles.boxHeader}>{error}</h2>
+        </div>
+      </div>
+    );
 
-        if (updateDone) {
-          toast.success("done successfully", { id: "home-toast" });
-          dispatch(resetUpdateState());
-        }
+  // No data state
+  if (!data?.length)
+    return (
+      <div className={styles.container}>
+        <div className={styles.prayerBox}>
+          <h2 className={styles.boxHeader}>لا توجد أدعية بعد</h2>
+          <button
+            className={styles.getStartButton}
+            onClick={() => navigate("/supplications", { replace: true })}
+          >
+            أضف الآن
+          </button>
+        </div>
+      </div>
+    );
 
-        if (updateError) {
-          toast.error(`Error: ${updateError}`, { id: "home-toast" });
-          dispatch(resetUpdateState());
-        }
-      }, [updateLoading, updateDone, updateError, dispatch]);
-
+  // Main content
   return (
-    <>
-      {error === null ? (
-        !loading ? (
-          data && data.length !== 0 ? (
-            <div className={styles.container}>
-              <div className={styles.prayerBox}>
-                <h2 className={styles.boxHeader}>الدعاء العشوائي</h2>
+    <div className={styles.container}>
+      <div className={styles.prayerBox}>
+        <h2 className={styles.boxHeader}>الدعاء العشوائي</h2>
 
-                <div className={styles.prayerContent}>
-                  <div className={styles.section}>
-                    <h3 className={styles.sectionTitle}>نص الدعاء</h3>
-                    <p className={styles.prayerText}>{prayer?.text}</p>
-                  </div>
-
-                  <div className={styles.section}>
-                    <h3 className={styles.sectionTitle}>الفضل من الذكر</h3>
-                    <p className={styles.virtueText}>{prayer?.virtue}</p>
-                  </div>
-
-                  <div className={styles.section}>
-                    <h3 className={styles.sectionTitle}>وقت الذكر</h3>
-                    <p className={styles.timeText}>{prayer?.time}</p>
-                  </div>
-
-                  <div className={styles.section}>
-                    <h3 className={styles.sectionTitle}>عدد الذكر</h3>
-                    <p className={styles.timeText}>{prayer?.number}</p>
-                  </div>
-                </div>
-
-                <div className={styles.buttonContainer}>
-                  <button
-                    className={`${styles.button} ${styles.favoriteBtn}`}
-                    onClick={() =>
-                      handleAddToFavorite(prayer.id, data, dispatch)
-                    }
-                    title="add or remove from favorite"
-                  >
-                    {prayer?.is_fav ? <MdFavorite /> : <MdFavoriteBorder />}
-                  </button>
-                  <button
-                    className={`${styles.button} ${styles.nextBtn}`}
-                    onClick={() => tackRandomValue()}
-                    title="reload new prayer"
-                  >
-                    <TfiReload />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className={styles.container}>
-              <div className={styles.prayerBox}>
-                <h2 className={styles.boxHeader}>{error}</h2>
-                <div className={styles.startButton}>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      navigate("/supplications", { replace: true })
-                    }
-                    title="start new prayer"
-                  >
-                    get started
-                  </button>
-                </div>
-              </div>
-            </div>
-          )
-        ) : (
-          <div className={styles.container}>
-            <div className={styles.prayerBox}>
-              <h2 className={styles.boxHeader}>loading......</h2>
-            </div>
+        <div className={styles.prayerContent}>
+          <div className={styles.section}>
+            <h3 className={styles.sectionTitle}>نص الدعاء</h3>
+            <p className={styles.prayerText}>{prayer?.text}</p>
           </div>
-        )
-      ) : (
-        <div className={styles.container}>
-          <div className={styles.prayerBox}>
-            <h2 className={styles.boxHeader}>{error}</h2>
+
+          <div className={styles.section}>
+            <h3 className={styles.sectionTitle}>الفضل من الذكر</h3>
+            <p className={styles.virtueText}>{prayer?.virtue}</p>
+          </div>
+
+          <div className={styles.section}>
+            <h3 className={styles.sectionTitle}>وقت الذكر</h3>
+            <p className={styles.timeText}>{prayer?.time}</p>
+          </div>
+
+          <div className={styles.section}>
+            <h3 className={styles.sectionTitle}>عدد الذكر</h3>
+            <p className={styles.timeText}>{prayer?.number}</p>
           </div>
         </div>
-      )}
-    </>
+
+        <div className={styles.buttonContainer}>
+          <button
+            className={`${styles.button} ${styles.favoriteBtn}`}
+            onClick={() => handleAddToFavorite(prayer.id)}
+            title="add or remove from favorite"
+          >
+            {prayer?.is_fav ? <MdFavorite /> : <MdFavoriteBorder />}
+          </button>
+
+          <button
+            className={`${styles.button} ${styles.nextBtn}`}
+            onClick={tackRandomValue}
+            title="reload new prayer"
+          >
+            <TfiReload />
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

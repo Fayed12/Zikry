@@ -26,8 +26,12 @@ const initialState = {
 // fetch all data
 export const fetchData = createAsyncThunk(
   "dataSlice/fetchData",
-  async (_, thunkAPI) => {
-    const { data, error } = await supabase.from("data").select("*");
+  async (user_id = null, thunkAPI) => {
+    let query = supabase.from("data").select("*");
+      if (user_id) {
+        query = query.eq("user_id", user_id);
+      }
+    const { data, error } = await query;
     if (error) return thunkAPI.rejectWithValue(error.message);
     return data;
   }

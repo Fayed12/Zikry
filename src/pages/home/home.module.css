@@ -5,16 +5,44 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.container::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='2' fill='rgba(105, 66, 30, 0.1)' /%3E%3C/svg%3E");
+  pointer-events: none;
+  background-attachment: fixed;
+  z-index: 1;
 }
 
 .prayerBox {
   width: 90%;
   max-width: 800px;
+  height: 70vh;
+  overflow: auto;
   background-color: #eccbac;
   border-radius: 10px;
   padding: 1rem;
   box-shadow: 0 4px 15px rgba(143, 110, 79, 0.2);
   position: relative;
+  z-index: 2;
+}
+
+.prayerBox::-webkit-scrollbar{
+  width: 5px;
+}
+.prayerBox::-webkit-scrollbar-track{
+  background-color: #fdf6f0;
+}
+.prayerBox::-webkit-scrollbar-thumb{
+  background-color: #cda27b;
+  border-radius: 10px;
 }
 
 .boxHeader {
@@ -35,7 +63,7 @@
 .sectionTitle {
   color: #8f6e4f;
   font-size: 1rem;
-  margin-bottom: .7rem;
+  margin-bottom: 0.7rem;
   font-weight: 600;
 }
 
@@ -63,7 +91,8 @@
 }
 
 .button,
-.startButton button {
+.startButton button,
+.getStartButton {
   padding: 0.8rem 1.5rem;
   border: none;
   border-radius: 8px;
@@ -83,18 +112,170 @@
   transform: translateY(-2px);
 }
 
-button svg{
-    font-size: 1.2rem;
+button svg {
+  font-size: 1.2rem;
 }
 
-.startButton{
-    width: fit-content;
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
+.startButton {
+  width: fit-content;
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
 }
 
 .startButton button {
-    padding: 5px 10px;
-    font-size: 13px;
+  padding: 5px 10px;
+  font-size: 13px;
+}
+
+.supContainer {
+  height: calc(100vh - 141px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #efccac 0%, #cda27b 100%);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.supContainer::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 50l10-10 10 10-10 10z' fill='rgba(105, 66, 30, 0.15)' /%3E%3C/svg%3E");
+  animation: backgroundMove 30s linear infinite alternate;
+  opacity: 0.5;
+}
+
+@keyframes backgroundMove {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-50%) rotate(360deg);
+  }
+}
+
+.startMessage {
+  color: #69421e;
+  font-size: 3.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  animation: titleFloat 1s ease-out 0.3s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes titleFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.startSupMessage {
+  color: #8f6e4f;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 2.5rem;
+  animation: messageFloat 1s ease-out 0.6s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes messageFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.getStartContainer {
+  display: flex;
+  justify-content: center;
+  animation: buttonFloat 1s ease-out 0.9s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes buttonFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.getStartButton {
+  background: #69421e;
+  color: white;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.getStartButton::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400%;
+  height: 400%;
+  background: radial-gradient(
+    circle,
+    rgba(239, 204, 172, 0.2) 0%,
+    rgba(105, 66, 30, 0) 70%
+  );
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.6s ease-out;
+}
+
+.getStartButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(105, 66, 30, 0.2);
+  background: #8f6e4f;
+}
+
+.getStartButton:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.getStartButton:active {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px rgba(105, 66, 30, 0.2);
+}
+
+/* Floating particles animation */
+.supContainer::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='2' fill='rgba(105, 66, 30, 0.1)' /%3E%3C/svg%3E");
+  pointer-events: none;
+  background-attachment: fixed;
+  z-index: 1;
 }

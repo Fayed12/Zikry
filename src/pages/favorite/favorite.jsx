@@ -23,7 +23,8 @@ const Favorite = () => {
         updateError,
       } = useSelector((state) => state.data);
     const dispatch = useDispatch();
-    const [allFav, setAllFav] = useState([])
+  const [allFav, setAllFav] = useState([])
+    const [loggedUser, setLoggedUser] = useState({});
     
     // function to remove form favorite
     function handleRemoveFromFav(id) {
@@ -53,9 +54,11 @@ const Favorite = () => {
     // fetch all data
     useEffect(() => {
         if (!data || data.length === 0) {
-            dispatch(fetchData());
+            if (loggedUser && loggedUser.id) {
+              dispatch(fetchData(loggedUser.id));
+            }
         }
-    }, [data, data.length, dispatch]);
+    }, [data, data.length, dispatch, loggedUser]);
     
     useEffect(() => {
         if (data && data.length > 0) {
@@ -65,6 +68,18 @@ const Favorite = () => {
             setAllFav(favData)
         }
     }, [data]);
+  
+    useEffect(() => {
+      const user =
+        JSON.parse(localStorage.getItem("user")) ||
+        JSON.parse(sessionStorage.getItem("user"));
+      if (user) {
+        setLoggedUser(user);
+      } else {
+        setLoggedUser({});
+      }
+    }, []);
+  
   return (
     <div className={styles.page}>
       <header className={styles.header}>
