@@ -5,6 +5,9 @@ import { useNavigate } from "react-router";
 // react hook form
 import { useForm } from "react-hook-form";
 
+// react icons
+import { TbArrowBackUpDouble } from "react-icons/tb";
+
 // react
 import { useEffect, useState } from "react";
 
@@ -21,8 +24,8 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onChange" });
-    const [allUsers, setAllUsers] = useState([]);
-    const navigate = useNavigate()
+  const [allUsers, setAllUsers] = useState([]);
+  const navigate = useNavigate();
 
   // check user
   function submit(data) {
@@ -31,9 +34,9 @@ const Login = () => {
     );
     if (correctUser) {
       toast.loading("loading....", { id: "login-toast" });
-        setTimeout(() => {
-          // eslint-disable-next-line no-unused-vars
-          const { password, ...safeUser } = correctUser;
+      setTimeout(() => {
+        // eslint-disable-next-line no-unused-vars
+        const { password, ...safeUser } = correctUser;
 
         toast.success("login successfully", { id: "login-toast" });
         sessionStorage.setItem("loginStatus", true);
@@ -43,9 +46,9 @@ const Login = () => {
           sessionStorage.setItem("user", JSON.stringify(safeUser));
         }
       }, 1500);
-        setTimeout(() => {
-            navigate("/home",{replace:true})
-        }, 2000);
+      setTimeout(() => {
+        navigate("/home", { replace: true });
+      }, 2000);
     } else {
       toast.error("email or password is incorrect, try again", {
         id: "login-toast",
@@ -114,12 +117,13 @@ const Login = () => {
               <input type="checkbox" {...register("checkbox")} />
               <span>Remember me!</span>
             </label>
-            {/* <NavLink to="/forgotPassword" replace={ true}  className={styles.forgotPassword}>
+            <NavLink
+              to="/forgotPassword"
+              replace={true}
+              className={styles.forgotPassword}
+            >
               Forgot Password?
-            </NavLink> */}
-            <a href="#" className={styles.forgotPassword}>
-              forgot password?
-            </a>
+            </NavLink>
           </div>
 
           <button type="submit" className={styles.submitButton}>
@@ -134,6 +138,11 @@ const Login = () => {
               Sign Up
             </NavLink>
           </p>
+        </div>
+        <div className={styles.back}>
+          <NavLink to={"/home"} replace={true} title=" back to home">
+            <TbArrowBackUpDouble />
+          </NavLink>
         </div>
       </div>
     </div>
