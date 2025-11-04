@@ -5,6 +5,8 @@
   justify-content: center;
   background: linear-gradient(135deg, #efccac 0%, #8f6e4f 100%);
   padding: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .formWrapper {
