@@ -12,6 +12,7 @@ import SignUp from "../pages/signup/signUp";
 import Login from "../pages/login/login";
 import ForgotPassword from "../pages/forgot-password/forgotPassword";
 import ProtectedRoutes from "./protectedRoutes";
+import Rosary from "../pages/rosary/rosary";
 
 const router = createBrowserRouter([
   {
@@ -28,17 +29,27 @@ const router = createBrowserRouter([
         path: "home",
       },
       {
-        element:
-          (<ProtectedRoutes>
+        element: (
+          <ProtectedRoutes>
             <Supplications />
-          </ProtectedRoutes>),
+          </ProtectedRoutes>
+        ),
         path: "supplications",
       },
       {
-        element:
-          (<ProtectedRoutes>
+        element: (
+          <ProtectedRoutes>
+            <Rosary />
+          </ProtectedRoutes>
+        ),
+        path: "rosary",
+      },
+      {
+        element: (
+          <ProtectedRoutes>
             <Favorite />
-          </ProtectedRoutes>),
+          </ProtectedRoutes>
+        ),
         path: "favorite",
       },
       {
