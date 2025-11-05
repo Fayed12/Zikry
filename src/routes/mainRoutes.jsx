@@ -13,6 +13,7 @@ import Login from "../pages/login/login";
 import ForgotPassword from "../pages/forgot-password/forgotPassword";
 import ProtectedRoutes from "./protectedRoutes";
 import Rosary from "../pages/rosary/rosary";
+import About from "../pages/about/about";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         element: <Home />,
         path: "home",
+      },
+      {
+        element: <About />,
+        path: "about",
       },
       {
         element: (

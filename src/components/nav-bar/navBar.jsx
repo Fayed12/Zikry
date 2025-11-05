@@ -19,6 +19,11 @@ function NavBar() {
                 </NavLink>
               </li>
               <li>
+                <NavLink to={"about"} replace={true}>
+                  About
+                </NavLink>
+              </li>
+              <li>
                 <NavLink to={"supplications"} replace={true}>
                   supplications
                 </NavLink>
