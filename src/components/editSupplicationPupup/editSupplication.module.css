@@ -117,3 +117,13 @@
     font-size: 1rem;
   }
 }
+
+@media (width <= 600px) {
+  .formRow{
+    flex-direction: column;
+  }
+
+  .popup {
+    width: calc(100% - 32px);
+  }
+}

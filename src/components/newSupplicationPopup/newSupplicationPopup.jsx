@@ -13,6 +13,7 @@ import { v4 as uuidV4 } from "uuid";
 // local
 import styles from "./newSupplication.module.css";
 import { addNewValue, resetAddNewValue } from "../../redux/dataSlice";
+import { useUpdateToast } from "../../hooks/useActionToast";
 
 const NewSupplicationPopup = ({ funClose }) => {
   const { addNewSuppActions } = useSelector((state) => state.data);
@@ -23,6 +24,11 @@ const NewSupplicationPopup = ({ funClose }) => {
   const [virtue, setVirtue] = useState("");
   const [time, setTime] = useState("");
   const inputFocus = useRef();
+  useUpdateToast(
+    addNewSuppActions.loading,
+    addNewSuppActions.done,
+    addNewSuppActions.error
+  , resetAddNewValue);
 
   // function handel empty fields
   function checkEmpty() {
@@ -66,25 +72,6 @@ const NewSupplicationPopup = ({ funClose }) => {
       funClose(false);
     }, 1500);
   }
-
-  useEffect(() => {
-    if (addNewSuppActions.loading) {
-      toast.loading("جار الإضافة...", { id: "home-toast" });
-    } else if (addNewSuppActions.done) {
-      toast.success("تمت الإضافة بنجاح 🎉", { id: "home-toast" });
-      dispatch(resetAddNewValue());
-    } else if (addNewSuppActions.error) {
-      toast.error(`حدث خطأ: ${addNewSuppActions.error}`, {
-        id: "home-toast",
-      });
-      dispatch(resetAddNewValue());
-    }
-  }, [
-    addNewSuppActions.done,
-    addNewSuppActions.error,
-    addNewSuppActions.loading,
-    dispatch,
-  ]);
 
   useEffect(() => {
     inputFocus.current.focus();

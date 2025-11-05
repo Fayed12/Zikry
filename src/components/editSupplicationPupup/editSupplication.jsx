@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 // local
 import styles from "./editSupplication.module.css";
 import { resetUpdateState, updateData } from "../../redux/dataSlice";
+import { useUpdateToast } from "../../hooks/useActionToast";
 
 const EditSupplication = ({ funClose, supplication }) => {
   const { updateLoading, updateDone, updateError } = useSelector(
@@ -22,7 +23,8 @@ const EditSupplication = ({ funClose, supplication }) => {
     virtue: supplication.virtue,
     time: supplication.time,
   });
-    const inpField = useRef()
+  const inpField = useRef()
+  useUpdateToast(updateLoading, updateDone, updateError, resetUpdateState);
 
   // check inputs
   function handleCheckInputValue() {
@@ -58,22 +60,6 @@ const EditSupplication = ({ funClose, supplication }) => {
     }, 1500);
   }
 
-  useEffect(() => {
-    if (updateLoading) {
-      toast.loading("...جاري التحديث", { id: "home-toast" });
-    }
-
-    if (updateDone) {
-      toast.success("تم التحديث بنجاح", { id: "home-toast" });
-      dispatch(resetUpdateState());
-    }
-
-    if (updateError) {
-      toast.error(`Error: ${updateError}`, { id: "home-toast" });
-      dispatch(resetUpdateState());
-    }
-  }, [updateLoading, updateDone, updateError, dispatch]);
-    
     useEffect(() => {
         inpField.current.focus();
     },[])

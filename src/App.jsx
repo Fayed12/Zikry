@@ -16,44 +16,46 @@ import Loading from "./pages/loading/loading";
 function App() {
   const [isOpenWelcome, setIsOpenWelcome] = useState(() => {
     const status = sessionStorage.getItem("isOpenWelcome");
-    return status || true
+    return status === null ? "true" : status;
   })
 
   useEffect(() => {
      const timer =setTimeout(() => {
-      setIsOpenWelcome(false)
+      setIsOpenWelcome("false")
     }, 2000);
 
     return ()=>clearTimeout(timer)
   }, [isOpenWelcome])
 
   useEffect(() => {
-    sessionStorage.setItem("isOpenWelcome", isOpenWelcome);
+    sessionStorage.setItem("isOpenWelcome", isOpenWelcome.toString());
   }, [isOpenWelcome]);
   if (isOpenWelcome === "true") {
     return (
       <Loading/>
     )
+  } else {
+    return (
+      <>
+        <Provider store={store}>
+          <div className="all-page">
+            <header>
+              <NavBar />
+            </header>
+            <main>
+              <div className="content">
+                <Outlet />
+              </div>
+            </main>
+            <footer>
+              <Footer />
+            </footer>
+          </div>
+        </Provider>
+      </>
+    );
   }
-  return (
-    <>
-      <Provider store={store}>
-        <div className="all-page">
-          <header>
-            <NavBar />
-          </header>
-          <main>
-            <div className="content">
-              <Outlet />
-            </div>
-          </main>
-          <footer>
-            <Footer />
-          </footer>
-        </div>
-      </Provider>
-    </>
-  );
+  
 }
 
 export default App

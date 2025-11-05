@@ -33,7 +33,7 @@ export default function About() {
     <main className={styles.page} dir="rtl">
       <section className={styles.hero}>
         <div className={styles.heroInner}>
-          <h1 className={styles.title}>عن تطبيق زكري</h1>
+          <h1 className={styles.title}>عن تطبيق ذكري</h1>
           <p className={styles.subtitle}>
             رفيقك اليومي في حفظ الأذكار وإدارة الأدعية بطريقة جميلة وسهلة
           </p>
@@ -52,7 +52,6 @@ export default function About() {
               </div>
               <h3 className={styles.cardTitle}>{f.title}</h3>
               <p className={styles.cardDesc}>{f.desc}</p>
-              <div className={styles.cardGlow} />
             </article>
           ))}
         </div>

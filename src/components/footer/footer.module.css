@@ -1,13 +1,13 @@
-.content {
-  background-color: #efccac;
+.footerContent {
+  background-color: #ffe3c9;
   padding: 20px;
   text-align: center;
-  color: #69421e;
-  font-size: 1rem;
+  color: #b2753c;
+  font-size: .9rem;
   font-weight: 500;
 }
 
-.name {
+.footerContent .name {
   color: #8f6e4f;
   font-weight: 600;
 }

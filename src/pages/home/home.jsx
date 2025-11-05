@@ -8,12 +8,10 @@ import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchData, resetUpdateState } from "../../redux/dataSlice";
 
-// toast
-import toast from "react-hot-toast";
-
 // local
 import styles from "./home.module.css";
 import addToFavorite from "../../utils/addToFav";
+import { useUpdateToast } from "../../hooks/useActionToast";
 
 // react icons
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
@@ -32,6 +30,7 @@ function Home() {
   const [randomNum, setRandomNum] = useState(0);
   const [loggedUser, setLoggedUser] = useState(null);
   const [loginStatus, setLoginStatus] = useState(false);
+  useUpdateToast(updateLoading, updateDone, updateError, resetUpdateState);
 
   /* --------------------------------------------------
    🧩 1. Get logged user + login status on mount
@@ -54,10 +53,12 @@ function Home() {
    🧩 2. Fetch data for this user
   -------------------------------------------------- */
   useEffect(() => {
-    if (loggedUser?.id) {
-      dispatch(fetchData(loggedUser.id));
+    if (!data || data.length === 0) {
+      if (loggedUser?.id) {
+        dispatch(fetchData(loggedUser.id));
+      }
     }
-  }, [dispatch, loggedUser]);
+  }, [data, dispatch, loggedUser]);
 
   /* --------------------------------------------------
    🧩 3. Select random prayer
@@ -69,21 +70,6 @@ function Home() {
       setPrayer(data[randomIndex]);
     }
   }, [data]);
-
-  /* --------------------------------------------------
-   🧩 4. Handle update states (toast)
-  -------------------------------------------------- */
-  useEffect(() => {
-    if (updateLoading) toast.loading("جاري التحديث...", { id: "home-toast" });
-    if (updateDone) {
-      toast.success("تم بنجاح ✅", { id: "home-toast" });
-      dispatch(resetUpdateState());
-    }
-    if (updateError) {
-      toast.error(`خطأ: ${updateError}`, { id: "home-toast" });
-      dispatch(resetUpdateState());
-    }
-  }, [updateLoading, updateDone, updateError, dispatch]);
 
   /* --------------------------------------------------
    ⚙️ Functions
@@ -107,7 +93,7 @@ function Home() {
   -------------------------------------------------- */
 
   // Not logged in
-  if (!loginStatus) {
+  if (!loginStatus || data.length == 0) {
     return (
       <div className={styles.supContainer}>
         <div className={styles.prayerBox}>
@@ -130,7 +116,7 @@ function Home() {
   if (loading)
     return (
       <div className={styles.container}>
-        <div className={styles.prayerBox}>
+        <div className={styles.loadingBox}>
           <h2 className={styles.boxHeader}>Loading...</h2>
         </div>
       </div>

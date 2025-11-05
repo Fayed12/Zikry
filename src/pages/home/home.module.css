@@ -22,7 +22,8 @@
   z-index: 1;
 }
 
-.prayerBox {
+.prayerBox ,
+.loadingBox{
   width: 90%;
   max-width: 800px;
   height: 70vh;
@@ -35,13 +36,17 @@
   z-index: 2;
 }
 
-.prayerBox::-webkit-scrollbar{
+.loadingBox{
+  height: fit-content;
+}
+
+.prayerBox::-webkit-scrollbar {
   width: 5px;
 }
-.prayerBox::-webkit-scrollbar-track{
+.prayerBox::-webkit-scrollbar-track {
   background-color: #fdf6f0;
 }
-.prayerBox::-webkit-scrollbar-thumb{
+.prayerBox::-webkit-scrollbar-thumb {
   background-color: #cda27b;
   border-radius: 10px;
 }
@@ -138,6 +143,23 @@ button svg {
   padding: 20px;
   position: relative;
   overflow: hidden;
+}
+
+.supContainer .prayerBox {
+  width: 90%;
+  max-width: 800px;
+  height: fit-content;
+  overflow: auto;
+  background-color: #eccbac;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 15px rgba(143, 110, 79, 0.2);
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .supContainer::before {
@@ -279,4 +301,160 @@ button svg {
   pointer-events: none;
   background-attachment: fixed;
   z-index: 1;
+}
+
+/* ------------------ Responsive improvements (mobile-first) ------------------ */
+@media (max-width: 980px) {
+  .container {
+    padding: 28px 16px;
+  }
+
+  .prayerBox {
+    width: 96%;
+    max-width: 720px;
+    height: auto;
+    padding: 1rem;
+    border-radius: 14px;
+  }
+
+  .boxHeader {
+    font-size: 1.5rem;
+  }
+
+  .prayerText {
+    font-size: 1.15rem;
+    padding: 0 6px;
+  }
+
+  .virtueText,
+  .timeText {
+    font-size: 1rem;
+  }
+
+  .buttonContainer {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .button,
+  .getStartButton {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 1.05rem;
+    border-radius: 12px;
+  }
+
+  .startButton {
+    position: static;
+    right: auto;
+    bottom: auto;
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .startButton button {
+    padding: 10px 14px;
+    font-size: 0.98rem;
+  }
+
+  .supContainer {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container::after,
+  .supContainer::after {
+    background-size: 36px 36px;
+  }
+
+  .startMessage {
+    font-size: 2.6rem;
+  }
+
+  .startSupMessage {
+    font-size: 1.05rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .prayerBox {
+    padding: 0.9rem;
+    border-radius: 12px;
+  }
+
+  .button,
+  .getStartButton {
+    padding: 13px 16px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 16px 12px;
+  }
+
+  .prayerBox {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    box-shadow: 0 8px 30px rgba(143, 110, 79, 0.12);
+  }
+
+  .boxHeader {
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .prayerText {
+    font-size: 1.05rem;
+  }
+
+  .buttonContainer {
+    width: 100%;
+    padding: 0 6px;
+  }
+
+  .button,
+  .getStartButton {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1.02rem;
+  }
+
+  .getStartButton {
+    font-size: 1.05rem;
+    padding: 14px 18px;
+  }
+
+  .getStartButton::before {
+    width: 300%;
+    height: 300%;
+  }
+
+  .startMessage {
+    font-size: 2rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .startSupMessage {
+    font-size: 0.96rem;
+    margin-bottom: 1.4rem;
+  }
+
+  button svg {
+    font-size: 1.4rem;
+  }
+}
+
+/* Ensure large tap targets across all small screens */
+@media (hover: none) and (pointer: coarse) {
+  .button,
+  .getStartButton,
+  .startButton button {
+    padding: 16px 18px;
+    font-size: 1.05rem;
+  }
 }

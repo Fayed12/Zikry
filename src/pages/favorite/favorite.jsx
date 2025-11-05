@@ -4,9 +4,6 @@ import { useSelector,useDispatch } from "react-redux";
 // react router
 import { NavLink } from "react-router";
 
-// toast
-import toast from "react-hot-toast";
-
 // react
 import { useEffect, useState } from "react";
 
@@ -14,6 +11,7 @@ import { useEffect, useState } from "react";
 import styles from "./favorite.module.css";
 import addToFavorite from "../../utils/addToFav";
 import { fetchData, resetUpdateState } from "../../redux/dataSlice";
+import { useUpdateToast } from "../../hooks/useActionToast";
 
 const Favorite = () => {
       const {
@@ -24,7 +22,8 @@ const Favorite = () => {
       } = useSelector((state) => state.data);
     const dispatch = useDispatch();
   const [allFav, setAllFav] = useState([])
-    const [loggedUser, setLoggedUser] = useState({});
+  const [loggedUser, setLoggedUser] = useState({});
+  useUpdateToast(updateLoading, updateDone, updateError, resetUpdateState);
     
     // function to remove form favorite
     function handleRemoveFromFav(id) {
@@ -34,22 +33,6 @@ const Favorite = () => {
             }
         })
     }
-
-      useEffect(() => {
-        if (updateLoading) {
-          toast.loading("...جاري التحديث", { id: "home-toast" });
-        }
-
-        if (updateDone) {
-          toast.success("تم التحديث بنجاح", { id: "home-toast" });
-          dispatch(resetUpdateState());
-        }
-
-        if (updateError) {
-          toast.error(`Error: ${updateError}`, { id: "home-toast" });
-          dispatch(resetUpdateState());
-        }
-      }, [updateLoading, updateDone, updateError, dispatch]);
     
     // fetch all data
     useEffect(() => {

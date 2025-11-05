@@ -1,5 +1,5 @@
 // react
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // redux
 import { useSelector, useDispatch } from "react-redux";
@@ -22,6 +22,7 @@ import { ConfirmDialog } from "../../components/sweetAlert";
 import { resetDeleteState } from "../../redux/dataSlice";
 import NewSupplicationPopup from "../../components/newSupplicationPopup/newSupplicationPopup";
 import EditSupplication from "../../components/editSupplicationPupup/editSupplication";
+import { useUpdateToast } from "../../hooks/useActionToast";
 
 function Supplications() {
   const {
@@ -39,6 +40,7 @@ function Supplications() {
   const [openEditPopup, setOpenEditPopup] = useState(false);
   const [editValue, setEditValue] = useState("");
   const [loggedUser, setLoggedUser] = useState({});
+  useUpdateToast(updateLoading, updateDone, updateError, resetUpdateState);
 
   // update value
   function handleUpdate(id) {
@@ -53,22 +55,6 @@ function Supplications() {
   async function handleAddToFavorite(id, data, dispatch) {
     await addToFavorite(id, data, dispatch);
   }
-
-  useEffect(() => {
-    if (updateLoading) {
-      toast.loading("...جاري التحديث", { id: "home-toast" });
-    }
-
-    if (updateDone) {
-      toast.success("تم التحديث بنجاح", { id: "home-toast" });
-      dispatch(resetUpdateState());
-    }
-
-    if (updateError) {
-      toast.error(`Error: ${updateError}`, { id: "home-toast" });
-      dispatch(resetUpdateState());
-    }
-  }, [updateLoading, updateDone, updateError, dispatch]);
 
   // delete value
   async function handleDelete(prayerId) {
