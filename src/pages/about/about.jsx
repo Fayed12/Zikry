@@ -56,7 +56,7 @@ export default function About() {
             </article>
           ))}
         </div>
-      </section>
+          </section>
     </main>
   );
 }

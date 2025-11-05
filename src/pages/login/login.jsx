@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 // local
 import styles from "./login.module.css";
 import { supabase } from "../../supabaseClient";
+import Loading from "../loading/loading";
 
 const Login = () => {
   const {
@@ -25,6 +26,7 @@ const Login = () => {
     formState: { errors },
   } = useForm({ mode: "onChange" });
   const [allUsers, setAllUsers] = useState([]);
+  const [openLoading, setOpenLoading] = useState(false)
   const navigate = useNavigate();
 
   // check user
@@ -34,6 +36,7 @@ const Login = () => {
     );
     if (correctUser) {
       toast.loading("loading....", { id: "login-toast" });
+      setOpenLoading(true);
       setTimeout(() => {
         // eslint-disable-next-line no-unused-vars
         const { password, ...safeUser } = correctUser;
@@ -73,80 +76,87 @@ const Login = () => {
     fetchUsers();
   }, []);
   return (
-    <div className={styles.container}>
-      <div className={styles.formWrapper}>
-        <h1 className={styles.title}>Welcome Back</h1>
-        <p className={styles.subtitle}>Continue your spiritual journey</p>
+    <>
+      <div className={styles.container}>
+        <div className={styles.formWrapper}>
+          <h1 className={styles.title}>Welcome Back</h1>
+          <p className={styles.subtitle}>Continue your spiritual journey</p>
 
-        <form className={styles.form} onSubmit={handleSubmit(submit)}>
-          <div className={styles.inputGroup}>
-            <input
-              type="email"
-              name="email"
-              {...register("email", {
-                required: "Email required*",
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
-                  message: "Only Google Gmail is allowed*",
-                },
-              })}
-              placeholder="Email Address"
-              className={styles.input}
-            />
-            {errors.email && (
-              <p className="error-message">{errors.email.message}</p>
-            )}
+          <form className={styles.form} onSubmit={handleSubmit(submit)}>
+            <div className={styles.inputGroup}>
+              <input
+                type="email"
+                name="email"
+                {...register("email", {
+                  required: "Email required*",
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+                    message: "Only Google Gmail is allowed*",
+                  },
+                })}
+                placeholder="Email Address"
+                className={styles.input}
+              />
+              {errors.email && (
+                <p className="error-message">{errors.email.message}</p>
+              )}
+            </div>
+
+            <div className={styles.inputGroup}>
+              <input
+                type="password"
+                name="password"
+                {...register("password", {
+                  required: "Password required*",
+                })}
+                placeholder="Password"
+                className={styles.input}
+              />
+              {errors.password && (
+                <p className="error-message">{errors.password.message}</p>
+              )}
+            </div>
+
+            <div className={styles.rememberForgot}>
+              <label className={styles.rememberMe}>
+                <input type="checkbox" {...register("checkbox")} />
+                <span>Remember me!</span>
+              </label>
+              <NavLink
+                to="/forgotPassword"
+                replace={true}
+                className={styles.forgotPassword}
+              >
+                Forgot Password?
+              </NavLink>
+            </div>
+
+            <button type="submit" className={styles.submitButton}>
+              Login
+            </button>
+          </form>
+
+          <div className={styles.signupSection}>
+            <p className={styles.signupText}>
+              Don't have an account?{" "}
+              <NavLink
+                to="/signUp"
+                replace={true}
+                className={styles.signupLink}
+              >
+                Sign Up
+              </NavLink>
+            </p>
           </div>
-
-          <div className={styles.inputGroup}>
-            <input
-              type="password"
-              name="password"
-              {...register("password", {
-                required: "Password required*",
-              })}
-              placeholder="Password"
-              className={styles.input}
-            />
-            {errors.password && (
-              <p className="error-message">{errors.password.message}</p>
-            )}
-          </div>
-
-          <div className={styles.rememberForgot}>
-            <label className={styles.rememberMe}>
-              <input type="checkbox" {...register("checkbox")} />
-              <span>Remember me!</span>
-            </label>
-            <NavLink
-              to="/forgotPassword"
-              replace={true}
-              className={styles.forgotPassword}
-            >
-              Forgot Password?
+          <div className={styles.back}>
+            <NavLink to={"/home"} replace={true} title=" back to home">
+              <TbArrowBackUpDouble />
             </NavLink>
           </div>
-
-          <button type="submit" className={styles.submitButton}>
-            Login
-          </button>
-        </form>
-
-        <div className={styles.signupSection}>
-          <p className={styles.signupText}>
-            Don't have an account?{" "}
-            <NavLink to="/signUp" replace={true} className={styles.signupLink}>
-              Sign Up
-            </NavLink>
-          </p>
-        </div>
-        <div className={styles.back}>
-          <NavLink to={"/home"} replace={true} title=" back to home">
-            <TbArrowBackUpDouble />
-          </NavLink>
         </div>
       </div>
-    </div>
+      {openLoading && <Loading/>}
+    </>
   );
 };
 
