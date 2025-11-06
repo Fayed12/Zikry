@@ -36,18 +36,28 @@ function Home() {
    🧩 1. Get logged user + login status on mount
   -------------------------------------------------- */
   useEffect(() => {
-    const user =
-      JSON.parse(localStorage.getItem("user")) ||
-      JSON.parse(sessionStorage.getItem("user"));
+    const sessionUser = sessionStorage.getItem("user");
+    const localUser = localStorage.getItem("user");
+
+    const user = sessionUser
+      ? JSON.parse(sessionUser)
+      : localUser
+      ? JSON.parse(localUser)
+      : null;
+
     const status =
       sessionStorage.getItem("loginStatus") ||
       localStorage.getItem("loginStatus");
 
-    if (user && status === "true") {
+    const hasUserData =
+      user && typeof user === "object" && Object.keys(user).length > 0;
+
+    if (hasUserData && status === "true") {
       setLoggedUser(user);
       setLoginStatus(true);
     }
   }, []);
+
 
   /* --------------------------------------------------
    🧩 2. Fetch data for this user

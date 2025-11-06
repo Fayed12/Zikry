@@ -159,6 +159,42 @@
     color: #efddcc !important;
 }
 
+.emptyContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.empty{
+  position: relative;
+  z-index: 2;
+  background-color: #efccac;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: fit-content;
+  height: 200px;
+  padding:0px 30px;
+  border-radius: 10px;
+}
+
+.empty p{
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #6b3f27;
+  margin-bottom: 20px;
+}
+
+.empty a{
+  background-color: #fff2e6;
+  color: #5d371f;
+  padding: 5px 10px;
+  border-radius: 7px;
+  font-size: 1.3rem;
+}
+
 @media (max-width: 720px) {
   .grid {
     grid-template-columns: 1fr;
