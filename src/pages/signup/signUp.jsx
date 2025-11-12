@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 
 // local
-import styles from "./signup.module.css";
+import styles from "./signUp.module.css";
 import { supabase } from "../../supabaseClient";
 
 const SignUp = () => {

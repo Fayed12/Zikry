@@ -1,80 +1,79 @@
 // react router
 import { createBrowserRouter } from "react-router";
 
+// react
+import { lazy, Suspense } from "react";
+
 // local
-import App from "../App";
-import Home from "../pages/home/home";
 import ErrorPage from "../pages/error/errorPage";
-import Contact from "../pages/contact/contact";
-import Supplications from "../pages/supplication/supplications";
-import Favorite from "../pages/favorite/favorite";
-import SignUp from "../pages/signup/signUp";
-import Login from "../pages/login/login";
-import ForgotPassword from "../pages/forgot-password/forgotPassword";
 import ProtectedRoutes from "./protectedRoutes";
-import Rosary from "../pages/rosary/rosary";
-import About from "../pages/about/about";
+import Loading from "../pages/loading/loading";
+
+// Lazy imports
+const AppLazy = lazy(() => import("../App"));
+const HomeLazy = lazy(() => import("../pages/home/home"));
+const ContactLazy = lazy(() => import("../pages/contact/contact"));
+const SupplicationsLazy = lazy(() =>
+  import("../pages/supplication/supplications")
+);
+const FavoriteLazy = lazy(() => import("../pages/favorite/favorite"));
+const SignUpLazy = lazy(() => import("../pages/signup/signUp"));
+const LoginLazy = lazy(() => import("../pages/login/login"));
+const ForgotPasswordLazy = lazy(() =>
+  import("../pages/forgot-password/forgotPassword")
+);
+const RosaryLazy = lazy(() => import("../pages/rosary/rosary"));
+const AboutLazy = lazy(() => import("../pages/about/about"));
+
+// Helper to wrap lazy components with Suspense
+const withSuspense = (Component) => (
+  <Suspense fallback={<Loading />}>{Component}</Suspense>
+);
 
 const router = createBrowserRouter([
   {
-    element: <App />,
+    element: withSuspense(<AppLazy />),
     path: "/",
     errorElement: <ErrorPage />,
     children: [
-      {
-        element: <Home />,
-        index: true,
-      },
-      {
-        element: <Home />,
-        path: "home",
-      },
-      {
-        element: <About />,
-        path: "about",
-      },
+      { element: withSuspense(<HomeLazy />), index: true },
+      { element: withSuspense(<HomeLazy />), path: "home" },
+      { element: withSuspense(<AboutLazy />), path: "about" },
       {
         element: (
           <ProtectedRoutes>
-            <Supplications />
+            {withSuspense(<SupplicationsLazy />)}
           </ProtectedRoutes>
         ),
         path: "supplications",
       },
       {
         element: (
-          <ProtectedRoutes>
-            <Rosary />
-          </ProtectedRoutes>
+          <ProtectedRoutes>{withSuspense(<RosaryLazy />)}</ProtectedRoutes>
         ),
         path: "rosary",
       },
       {
         element: (
-          <ProtectedRoutes>
-            <Favorite />
-          </ProtectedRoutes>
+          <ProtectedRoutes>{withSuspense(<FavoriteLazy />)}</ProtectedRoutes>
         ),
         path: "favorite",
       },
-      {
-        element: <Contact />,
-        path: "contactUs",
-      },
+      { element: withSuspense(<ContactLazy />), path: "contactUs" },
     ],
   },
   {
-    element: <SignUp />,
+    element: withSuspense(<SignUpLazy />),
     path: "/signUp",
     errorElement: <ErrorPage />,
   },
   {
-    element: <Login />,
+    element: withSuspense(<LoginLazy />),
     path: "/login",
     errorElement: <ErrorPage />,
   },
   {
-    element: <ForgotPassword />,
+    element: withSuspense(<ForgotPasswordLazy />),
     path: "/forgotPassword",
     errorElement: <ErrorPage />,
   },

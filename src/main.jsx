@@ -1,9 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import { RouterProvider } from 'react-router'
-import router from './routes/mainRoutes.jsx'
-import { Toaster } from 'react-hot-toast'
+// react
+import { Suspense } from "react";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+// react router
+import { RouterProvider } from "react-router";
+
+// toaster
+import { Toaster } from "react-hot-toast";
+
+// local
+import "./index.css";
+import router from "./routes/mainRoutes.jsx"
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -14,10 +21,10 @@ createRoot(document.getElementById("root")).render(
         duration: 3000,
         style: {
           position: "relative",
-          zIndex:"1001",
+          zIndex: "1001",
         },
       }}
     />
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
   </StrictMode>
 );

@@ -7,7 +7,7 @@
 }
 
 .page {
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 141px);
   background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
   padding: 3rem 1.2rem;
   display: flex;
