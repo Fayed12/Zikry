@@ -160,10 +160,12 @@
 }
 
 .emptyContainer{
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 50vh;
+  flex-grow: 1;
 }
 
 .empty{

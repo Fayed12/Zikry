@@ -30,6 +30,7 @@ function Home() {
   const [randomNum, setRandomNum] = useState(0);
   const [loggedUser, setLoggedUser] = useState(null);
   const [loginStatus, setLoginStatus] = useState(false);
+  const [hasFetched, setHasFetched] = useState(false);
   useUpdateToast(updateLoading, updateDone, updateError, resetUpdateState);
 
   /* --------------------------------------------------
@@ -58,17 +59,19 @@ function Home() {
     }
   }, []);
 
-
   /* --------------------------------------------------
    🧩 2. Fetch data for this user
   -------------------------------------------------- */
   useEffect(() => {
-    if (!data || data.length === 0) {
-      if (loggedUser?.id) {
-        dispatch(fetchData(loggedUser.id));
+    if (!hasFetched) {
+      if (!data || data.length === 0) {
+        if (loggedUser?.id) {
+          dispatch(fetchData(loggedUser?.id));
+          setHasFetched(true);
+        }
       }
     }
-  }, [data, dispatch, loggedUser]);
+  }, [data, dispatch, hasFetched, loggedUser]);
 
   /* --------------------------------------------------
    🧩 3. Select random prayer

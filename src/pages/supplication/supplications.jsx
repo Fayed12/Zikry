@@ -40,6 +40,7 @@ function Supplications() {
   const [openEditPopup, setOpenEditPopup] = useState(false);
   const [editValue, setEditValue] = useState("");
   const [loggedUser, setLoggedUser] = useState({});
+  const [hasFetched, setHasFetched] = useState(false);
   useUpdateToast(updateLoading, updateDone, updateError, resetUpdateState);
 
   // update value
@@ -68,7 +69,7 @@ function Supplications() {
         });
 
         if (confirmAdd) {
-          dispatch(deleteData({ prayerId , userId : loggedUser.id}));
+          dispatch(deleteData({ prayerId, userId: loggedUser.id }));
           toast.success("تم الحذف بنجاح", { id: "home-toast" });
           const newData = data.filter((prayer) => {
             return prayer.id !== prayerId;
@@ -103,12 +104,15 @@ function Supplications() {
 
   // fetch data
   useEffect(() => {
-    if (!data || data.length === 0) {
-      if (loggedUser && loggedUser.id) {
-        dispatch(fetchData(loggedUser.id));
+    if (!hasFetched) {
+      if (!data || data.length === 0) {
+        if (loggedUser?.id) {
+          dispatch(fetchData(loggedUser?.id));
+          setHasFetched(true);
+        }
       }
     }
-  }, [data, data.length, dispatch, loggedUser, loggedUser.id]);
+  }, [data, dispatch, hasFetched, loggedUser]);
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -116,27 +120,27 @@ function Supplications() {
     }
   }, [data]);
 
-      useEffect(() => {
-        const sessionUser = sessionStorage.getItem("user");
-        const localUser = localStorage.getItem("user");
+  useEffect(() => {
+    const sessionUser = sessionStorage.getItem("user");
+    const localUser = localStorage.getItem("user");
 
-        const user = sessionUser
-          ? JSON.parse(sessionUser)
-          : localUser
-          ? JSON.parse(localUser)
-          : null;
+    const user = sessionUser
+      ? JSON.parse(sessionUser)
+      : localUser
+      ? JSON.parse(localUser)
+      : null;
 
-        const status =
-          sessionStorage.getItem("loginStatus") ||
-          localStorage.getItem("loginStatus");
+    const status =
+      sessionStorage.getItem("loginStatus") ||
+      localStorage.getItem("loginStatus");
 
-        const hasUserData =
-          user && typeof user === "object" && Object.keys(user).length > 0;
+    const hasUserData =
+      user && typeof user === "object" && Object.keys(user).length > 0;
 
-        if (hasUserData && status === "true") {
-          setLoggedUser(user);
-        }
-      }, []);
+    if (hasUserData && status === "true") {
+      setLoggedUser(user);
+    }
+  }, []);
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -232,7 +236,7 @@ function Supplications() {
           ) : (
             <div className={styles.stateContainer}>
               <div className={styles.stateEmpty}>
-                ابدأ بتنظيم ادعيتك وتخزينها في مكان واحد
+                <h1>ابدأ بتنظيم ادعيتك وتخزينها في مكان واحد</h1>
               </div>
             </div>
           )
@@ -247,10 +251,7 @@ function Supplications() {
         </div>
       )}
       {openPopup && (
-        <NewSupplicationPopup
-          funClose={setOpenPopup}
-          loggerUser={loggedUser}
-        />
+        <NewSupplicationPopup funClose={setOpenPopup} loggerUser={loggedUser} />
       )}
       {openEditPopup && (
         <EditSupplication

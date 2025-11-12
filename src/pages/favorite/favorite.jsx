@@ -1,5 +1,5 @@
 // redux
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 // react router
 import { NavLink } from "react-router";
@@ -14,66 +14,65 @@ import { fetchData, resetUpdateState } from "../../redux/dataSlice";
 import { useUpdateToast } from "../../hooks/useActionToast";
 
 const Favorite = () => {
-      const {
-        data,
-        updateLoading,
-        updateDone,
-        updateError,
-      } = useSelector((state) => state.data);
-    const dispatch = useDispatch();
-  const [allFav, setAllFav] = useState([])
+  const { data, updateLoading, updateDone, updateError } = useSelector(
+    (state) => state.data
+  );
+  const dispatch = useDispatch();
+  const [allFav, setAllFav] = useState([]);
   const [loggedUser, setLoggedUser] = useState({});
+  const [hasFetched, setHasFetched] = useState(false);
   useUpdateToast(updateLoading, updateDone, updateError, resetUpdateState);
-    
-    // function to remove form favorite
-    function handleRemoveFromFav(id) {
-        allFav.forEach((item) => {
-            if (item.id === id) {
-                addToFavorite(item.id , allFav, dispatch)
-            }
-        })
-    }
-    
-    // fetch all data
-    useEffect(() => {
-        if (!data || data.length === 0) {
-            if (loggedUser && loggedUser.id) {
-              dispatch(fetchData(loggedUser.id));
-            }
-        }
-    }, [data, data.length, dispatch, loggedUser]);
-    
-    useEffect(() => {
-        if (data && data.length > 0) {
-            const favData = data.filter((item) => {
-                return item.is_fav === true;
-            })
-            setAllFav(favData)
-        }
-    }, [data]);
-  
-    useEffect(() => {
-      const sessionUser = sessionStorage.getItem("user");
-      const localUser = localStorage.getItem("user");
 
-      const user = sessionUser
-        ? JSON.parse(sessionUser)
-        : localUser
-        ? JSON.parse(localUser)
-          : null;
-      
-      const hasUserData =
-        user && typeof user === "object" && Object.keys(user).length > 0;
-
-      if (hasUserData) {
-        setLoggedUser(user);
-      } else {
-        setLoggedUser({})
+  // function to remove form favorite
+  function handleRemoveFromFav(id) {
+    allFav.forEach((item) => {
+      if (item.id === id) {
+        addToFavorite(item.id, allFav, dispatch);
       }
-    }, []);
-  
-  console.log(allFav.length)
-  
+    });
+  }
+
+  // fetch all data
+  useEffect(() => {
+    if (!hasFetched) {
+      if (!data || data.length === 0) {
+        if (loggedUser?.id) {
+          dispatch(fetchData(loggedUser?.id));
+          setHasFetched(true);
+        }
+      }
+    }
+  }, [data, dispatch, hasFetched, loggedUser]);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const favData = data.filter((item) => {
+        return item.is_fav === true;
+      });
+      setAllFav(favData);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    const sessionUser = sessionStorage.getItem("user");
+    const localUser = localStorage.getItem("user");
+
+    const user = sessionUser
+      ? JSON.parse(sessionUser)
+      : localUser
+      ? JSON.parse(localUser)
+      : null;
+
+    const hasUserData =
+      user && typeof user === "object" && Object.keys(user).length > 0;
+
+    if (hasUserData) {
+      setLoggedUser(user);
+    } else {
+      setLoggedUser({});
+    }
+  }, []);
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -81,9 +80,9 @@ const Favorite = () => {
         <p className={styles.subtitle}>مجموعة الأدعية التي أضفتها للمفضلة</p>
       </header>
 
-      <section className={styles.grid}>
-        {!allFav || allFav.length > 0 ? (
-          allFav.map((item) => (
+      {allFav && allFav.length > 0 ? (
+        <section className={styles.grid}>
+          {allFav.map((item) => (
             <article key={item.id} className={styles.card}>
               <div className={styles.cardHead}>
                 <h2 className={styles.cardTitle}>{item.type}</h2>
@@ -122,18 +121,18 @@ const Favorite = () => {
                 </button>
               </footer>
             </article>
-          ))
-        ) : (
-          <div className={styles.emptyContainer}>
-            <div className={styles.empty}>
-                <p>ابدا باضافة ادعيتك المفضله الان</p>
-                <NavLink to={"/supplications"} replace={true}>
-                  كل الادعية
-                </NavLink>
-            </div>
+          ))}
+        </section>
+      ) : (
+        <div className={styles.emptyContainer}>
+          <div className={styles.empty}>
+            <p>ابدا باضافة ادعيتك المفضله الان</p>
+            <NavLink to={"/supplications"} replace={true}>
+              كل الادعية
+            </NavLink>
           </div>
-        )}
-      </section>
+        </div>
+      )}
     </div>
   );
 };
