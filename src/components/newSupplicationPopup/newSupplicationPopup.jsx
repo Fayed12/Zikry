@@ -15,7 +15,7 @@ import styles from "./newSupplication.module.css";
 import { addNewValue, resetAddNewValue } from "../../redux/dataSlice";
 import { useUpdateToast } from "../../hooks/useActionToast";
 
-const NewSupplicationPopup = ({ funClose }) => {
+const NewSupplicationPopup = ({ funClose, loggerUser }) => {
   const { addNewSuppActions } = useSelector((state) => state.data);
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
@@ -27,8 +27,9 @@ const NewSupplicationPopup = ({ funClose }) => {
   useUpdateToast(
     addNewSuppActions.loading,
     addNewSuppActions.done,
-    addNewSuppActions.error
-  , resetAddNewValue);
+    addNewSuppActions.error,
+    resetAddNewValue
+  );
 
   // function handel empty fields
   function checkEmpty() {
@@ -51,26 +52,27 @@ const NewSupplicationPopup = ({ funClose }) => {
   // function add new supplication
   function handleAddNew() {
     if (checkEmpty()) return;
-    const newId = uuidV4();
+      const newId = uuidV4();
 
-    const newSupp = {
-      id: newId,
-      allNumber,
-      title,
-      text,
-      virtue,
-      time,
-      is_fav: false,
-    };
-    dispatch(addNewValue(newSupp));
-    setText("");
-    setAllNumber("")
-    setTime("");
-    setTitle("");
-    setVirtue("");
-    setTimeout(() => {
-      funClose(false);
-    }, 1500);
+      const newSupp = {
+        id: newId,
+        allNumber,
+        title,
+        text,
+        virtue,
+        time,
+        is_fav: false,
+        user_id: loggerUser.id,
+      };
+      dispatch(addNewValue(newSupp));
+      setText("");
+      setAllNumber("");
+      setTime("");
+      setTitle("");
+      setVirtue("");
+      setTimeout(() => {
+        funClose(false);
+      }, 1500);
   }
 
   useEffect(() => {

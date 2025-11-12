@@ -68,7 +68,7 @@ function Supplications() {
         });
 
         if (confirmAdd) {
-          dispatch(deleteData(prayerId));
+          dispatch(deleteData({ prayerId , userId : loggedUser.id}));
           toast.success("تم الحذف بنجاح", { id: "home-toast" });
           const newData = data.filter((prayer) => {
             return prayer.id !== prayerId;
@@ -116,16 +116,27 @@ function Supplications() {
     }
   }, [data]);
 
-  useEffect(() => {
-    const user =
-      JSON.parse(localStorage.getItem("user")) ||
-      JSON.parse(sessionStorage.getItem("user"));
-    if (user) {
-      setLoggedUser(user);
-    } else {
-      setLoggedUser({});
-    }
-  }, []);
+      useEffect(() => {
+        const sessionUser = sessionStorage.getItem("user");
+        const localUser = localStorage.getItem("user");
+
+        const user = sessionUser
+          ? JSON.parse(sessionUser)
+          : localUser
+          ? JSON.parse(localUser)
+          : null;
+
+        const status =
+          sessionStorage.getItem("loginStatus") ||
+          localStorage.getItem("loginStatus");
+
+        const hasUserData =
+          user && typeof user === "object" && Object.keys(user).length > 0;
+
+        if (hasUserData && status === "true") {
+          setLoggedUser(user);
+        }
+      }, []);
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -238,8 +249,7 @@ function Supplications() {
       {openPopup && (
         <NewSupplicationPopup
           funClose={setOpenPopup}
-          setAllData={setSupplicationsValues}
-          supplication={supplicationsValues}
+          loggerUser={loggedUser}
         />
       )}
       {openEditPopup && (

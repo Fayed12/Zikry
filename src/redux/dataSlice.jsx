@@ -56,12 +56,12 @@ export const updateData = createAsyncThunk(
 // delete value
 export const deleteData = createAsyncThunk(
   "dataSlice/deleteData",
-  async (prayerId, thunkAPI) => {
-    const {error } = await supabase.from("data").delete().eq("id", prayerId);
+  async ({ prayerId, userId }, thunkAPI) => {
+    const { error } = await supabase.from("data").delete().eq("id", prayerId);
     if (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
-    thunkAPI.dispatch(fetchData());
+    thunkAPI.dispatch(fetchData(userId));
   }
 );
 
@@ -80,6 +80,7 @@ export const addNewValue = createAsyncThunk(
           virtue: newPrayer.virtue,
           time: newPrayer.time,
           is_fav: newPrayer.is_fav,
+          user_id: newPrayer.user_id
         },
       ])
       .select();
@@ -87,7 +88,7 @@ export const addNewValue = createAsyncThunk(
     if (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
-    thunkAPI.dispatch(fetchData());
+    thunkAPI.dispatch(fetchData(newPrayer.user_id));
     return data;
   }
 );
