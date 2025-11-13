@@ -1,5 +1,5 @@
 // react
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // redux
 import { useSelector, useDispatch } from "react-redux";
@@ -41,6 +41,7 @@ function Supplications() {
   const [editValue, setEditValue] = useState("");
   const [loggedUser, setLoggedUser] = useState({});
   const [hasFetched, setHasFetched] = useState(false);
+  const containerRef = useRef();
   useUpdateToast(updateLoading, updateDone, updateError, resetUpdateState);
 
   // update value
@@ -141,115 +142,134 @@ function Supplications() {
       setLoggedUser(user);
     }
   }, []);
+
+  // make background fixed
+  useEffect(() => {
+    if (openPopup || openEditPopup) {
+      containerRef.current.style.position = "fixed"
+      containerRef.current.style.width = "100%"
+    } else {
+      containerRef.current.style.position = "relative";
+    }
+  })
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <button className={styles.addButton} onClick={() => handelOpenPopup()}>
-          إضافة دعاء جديد +
-        </button>
-      </div>
+    <>
+      <div className={styles.container} ref={containerRef}>
+        <div className={styles.header}>
+          <button
+            className={styles.addButton}
+            onClick={() => handelOpenPopup()}
+          >
+            إضافة دعاء جديد +
+          </button>
+        </div>
 
-      {error === null ? (
-        !loading ? (
-          data && data.length !== 0 ? (
-            <div key={data.id} className={styles.cardsGrid}>
-              {supplicationsValues.map((supplication) => (
-                <div key={supplication.id} className={styles.card}>
-                  <div className={styles.cardHeader}>
-                    <h3 className={styles.cardTitle}>{supplication.type}</h3>
-                  </div>
-
-                  <div className={styles.cardContent}>
-                    <div className={styles.section}>
-                      <div className={styles.sectionTitleContainer}>
-                        <h4 className={styles.sectionTitle}> الدعاء</h4>
-                      </div>
-                      <p className={styles.sectionText}>{supplication.text}</p>
+        {error === null ? (
+          !loading ? (
+            data && data.length !== 0 ? (
+              <div key={data.id} className={styles.cardsGrid}>
+                {supplicationsValues.map((supplication) => (
+                  <div key={supplication.id} className={styles.card}>
+                    <div className={styles.cardHeader}>
+                      <h3 className={styles.cardTitle}>{supplication.type}</h3>
                     </div>
 
-                    <div className={styles.section}>
-                      <div className={styles.sectionTitleContainer}>
-                        <h4 className={styles.sectionTitle}>فضله</h4>
+                    <div className={styles.cardContent}>
+                      <div className={styles.section}>
+                        <div className={styles.sectionTitleContainer}>
+                          <h4 className={styles.sectionTitle}> الدعاء</h4>
+                        </div>
+                        <p className={styles.sectionText}>
+                          {supplication.text}
+                        </p>
                       </div>
-                      <p className={styles.sectionText}>
-                        {supplication.virtue}
-                      </p>
+
+                      <div className={styles.section}>
+                        <div className={styles.sectionTitleContainer}>
+                          <h4 className={styles.sectionTitle}>فضله</h4>
+                        </div>
+                        <p className={styles.sectionText}>
+                          {supplication.virtue}
+                        </p>
+                      </div>
+
+                      <div className={styles.section}>
+                        <div className={styles.sectionTitleContainer}>
+                          <h4 className={styles.sectionTitle}>الوقت</h4>
+                        </div>
+                        <p className={styles.sectionText}>
+                          {supplication.time}
+                        </p>
+                      </div>
+
+                      <div className={styles.section}>
+                        <div className={styles.sectionTitleContainer}>
+                          <h4 className={styles.sectionTitle}>العدد</h4>
+                        </div>
+                        <p className={styles.sectionText}>
+                          {supplication.number}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className={styles.section}>
-                      <div className={styles.sectionTitleContainer}>
-                        <h4 className={styles.sectionTitle}>الوقت</h4>
-                      </div>
-                      <p className={styles.sectionText}>{supplication.time}</p>
-                    </div>
-
-                    <div className={styles.section}>
-                      <div className={styles.sectionTitleContainer}>
-                        <h4 className={styles.sectionTitle}>العدد</h4>
-                      </div>
-                      <p className={styles.sectionText}>
-                        {supplication.number}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className={styles.cardActions}>
-                    {!supplication.is_fav ? (
+                    <div className={styles.cardActions}>
+                      {!supplication.is_fav ? (
+                        <button
+                          className={`${styles.actionButton} ${styles.favoriteBtn}`}
+                          onClick={() =>
+                            handleAddToFavorite(supplication.id, data, dispatch)
+                          }
+                          title="add to favorite"
+                        >
+                          <MdFavoriteBorder />
+                        </button>
+                      ) : (
+                        <button
+                          className={`${styles.actionButton} ${styles.favoriteBtn}`}
+                          onClick={() =>
+                            handleAddToFavorite(supplication.id, data, dispatch)
+                          }
+                          title="remove from favorite"
+                        >
+                          <MdFavorite />
+                        </button>
+                      )}
                       <button
-                        className={`${styles.actionButton} ${styles.favoriteBtn}`}
-                        onClick={() =>
-                          handleAddToFavorite(supplication.id, data, dispatch)
-                        }
-                        title="add to favorite"
+                        className={`${styles.actionButton} ${styles.updateBtn}`}
+                        onClick={() => handleUpdate(supplication.id)}
+                        title="edit"
                       >
-                        <MdFavoriteBorder />
+                        <CiEdit />
                       </button>
-                    ) : (
                       <button
-                        className={`${styles.actionButton} ${styles.favoriteBtn}`}
-                        onClick={() =>
-                          handleAddToFavorite(supplication.id, data, dispatch)
-                        }
-                        title="remove from favorite"
+                        className={`${styles.actionButton} ${styles.deleteBtn}`}
+                        onClick={() => handleDelete(supplication.id)}
+                        title="delete"
                       >
-                        <MdFavorite />
+                        <MdDeleteOutline />
                       </button>
-                    )}
-                    <button
-                      className={`${styles.actionButton} ${styles.updateBtn}`}
-                      onClick={() => handleUpdate(supplication.id)}
-                      title="edit"
-                    >
-                      <CiEdit />
-                    </button>
-                    <button
-                      className={`${styles.actionButton} ${styles.deleteBtn}`}
-                      onClick={() => handleDelete(supplication.id)}
-                      title="delete"
-                    >
-                      <MdDeleteOutline />
-                    </button>
+                    </div>
                   </div>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.stateContainer}>
+                <div className={styles.stateEmpty}>
+                  <h1>ابدأ بتنظيم ادعيتك وتخزينها في مكان واحد</h1>
                 </div>
-              ))}
-            </div>
+              </div>
+            )
           ) : (
             <div className={styles.stateContainer}>
-              <div className={styles.stateEmpty}>
-                <h1>ابدأ بتنظيم ادعيتك وتخزينها في مكان واحد</h1>
-              </div>
+              <div className={styles.stateLoading}>جارٍ التحميل...</div>
             </div>
           )
         ) : (
           <div className={styles.stateContainer}>
-            <div className={styles.stateLoading}>جارٍ التحميل...</div>
+            <div className={styles.stateError}>{error}</div>
           </div>
-        )
-      ) : (
-        <div className={styles.stateContainer}>
-          <div className={styles.stateError}>{error}</div>
-        </div>
-      )}
+        )}
+      </div>
       {openPopup && (
         <NewSupplicationPopup funClose={setOpenPopup} loggerUser={loggedUser} />
       )}
@@ -259,7 +279,7 @@ function Supplications() {
           supplication={editValue}
         />
       )}
-    </div>
+    </>
   );
 }
 
