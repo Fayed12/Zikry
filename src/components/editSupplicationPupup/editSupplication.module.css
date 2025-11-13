@@ -124,6 +124,6 @@
   }
 
   .popup {
-    width: calc(100% - 32px);
+    width: calc(90% - 32px);
   }
 }
